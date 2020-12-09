@@ -5,5 +5,5 @@ package gameobjects;
  *
  */
 public class BaseField extends Field {
-
+	
 }
