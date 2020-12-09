@@ -1,4 +1,4 @@
-package Trylma;
+package connection;
 
 /**
  * Manages connection between client and server
