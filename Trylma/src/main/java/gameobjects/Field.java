@@ -2,7 +2,7 @@ package gameobjects;
 import javax.swing.*;
 
 /**
- * Abstract field on board, subtypes: inner field, base field. 
+ * Abstract field on board, subtypes: inner field, base field.
  * Possibly visited object with peg as visitor (Visitor pattern).
  * @see InnerField, BaseField
  */
