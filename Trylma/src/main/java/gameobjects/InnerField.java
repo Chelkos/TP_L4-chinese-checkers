@@ -5,5 +5,11 @@ package gameobjects;
  *
  */
 public class InnerField extends Field{
+	public InnerField(){
+	}
 
+	@Override
+	public boolean accept(Peg peg) {
+		return true;
+	}
 }

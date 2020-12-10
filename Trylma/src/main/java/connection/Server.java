@@ -1,6 +1,8 @@
 package connection;
 import java.net.*;
 
+import gameobjects.Board;
+
 /**
  * Server class for handling clients requests
  * @see Client, App
@@ -9,7 +11,7 @@ public class Server {
 	
 	private Socket socket;
 	private ServerSocket server;
-	
+	private Board board;
 	/**
 	 * Constructor description
 	 * @param

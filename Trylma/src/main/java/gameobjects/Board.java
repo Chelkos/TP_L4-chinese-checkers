@@ -6,5 +6,10 @@ import javax.swing.*;
  *
  */
 public class Board extends JPanel{
+	public Field fields[][];
+	public Board(){
+		this.fields = new Field[17][13];
+	}
+
 
 }

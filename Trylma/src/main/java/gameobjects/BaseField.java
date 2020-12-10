@@ -5,5 +5,12 @@ package gameobjects;
  *
  */
 public class BaseField extends Field {
+	public BaseField(){
 	
+	}
+
+	@Override
+	public boolean accept(Peg peg) {
+		return false;
+	}
 }
