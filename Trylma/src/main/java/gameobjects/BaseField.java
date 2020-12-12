@@ -11,6 +11,10 @@ public class BaseField extends Field {
 	
 	public BaseField(int x, int y, int r, Color ownerColor){
 		this.ownerColor=ownerColor;
+		this.x=x;
+		this.y=y;
+		this.height=r;
+		this.width=r;
 	}
 
 	@Override

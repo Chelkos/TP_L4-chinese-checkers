@@ -14,7 +14,7 @@ public class Game {
 	private Player[] players;
 	
 	public Game(int playersNumber) {
-		
+		this.players=new Player[playersNumber];
 	}
 	
 	public Player winner() {
@@ -44,7 +44,8 @@ public class Game {
 		}
 		
 		private void setup() throws IOException{
-			
+			input=new Scanner(socket.getInputStream());
+			output=new PrintWriter(socket.getOutputStream(), true);
 		}
 		
 		private void processCommands() {

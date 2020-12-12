@@ -18,10 +18,10 @@ public class Peg {
 		return this.ownerColor;
 	}
 	public boolean inBase(){
-		return true; //TO BE DONE
+		return in_base; //TO BE DONE
 	}
 	public void visit(BaseField field){
-		return;
+		this.in_base=true;
 	}
 	public void visit(InnerField field){
 		return;

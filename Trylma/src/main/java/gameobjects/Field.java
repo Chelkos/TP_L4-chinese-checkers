@@ -15,6 +15,6 @@ public abstract class Field extends Ellipse2D.Float{
 		protected float radius;
 		public abstract boolean accept(Peg peg);
 		public Peg getVisitor(){
-			return null;
+			return this.visitor;
 		}
 }
