@@ -1,5 +1,6 @@
 package gameobjects;
 
+import connection.Game;
 import java.awt.Color;
 
 /**
@@ -7,22 +8,22 @@ import java.awt.Color;
  *
  */
 public class Peg {
-	private Player Owner;
-	private Color color;
+	private Color ownerColor;
 	private boolean in_base;
-	public Peg(Player player){
-		this.Owner=player;
+	
+	public Peg(Color ownerColor){
+		this.ownerColor=ownerColor;
 	}
-	public Player getOwner(){
-		return this.Owner;
+	public Color getOwnerColor(){
+		return this.ownerColor;
 	}
-	public Color getColor(Color color){
-		return this.color;
-	}
-	public boolean InBase(){
+	public boolean inBase(){
 		return true; //TO BE DONE
 	}
-	public void visit(Field field){
+	public void visit(BaseField field){
+		return;
+	}
+	public void visit(InnerField field){
 		return;
 	}
 }

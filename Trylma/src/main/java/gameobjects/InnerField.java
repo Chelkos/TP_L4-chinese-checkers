@@ -5,7 +5,9 @@ package gameobjects;
  *
  */
 public class InnerField extends Field{
-	public InnerField(){
+	
+	public InnerField(int x, int y, int r){
+		
 	}
 
 	@Override
