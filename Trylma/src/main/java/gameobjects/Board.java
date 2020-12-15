@@ -11,9 +11,6 @@ import java.awt.geom.Ellipse2D.Float;
  * Hexagram-shaped board with inner hexagon 6 "bases" 
  *
  */
-
-
-
 public class Board extends JFrame{
 	public Field fields[][];
 	public ArrayList<Field> Fields;
