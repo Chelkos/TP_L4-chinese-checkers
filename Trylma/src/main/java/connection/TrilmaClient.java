@@ -29,8 +29,8 @@ public class TrilmaClient {
 	private Scanner input;
 	private PrintWriter output;
 	
-	public TrilmaClient(String serverAddress) throws Exception{
-		
+	public TrilmaClient(/*String serverAddress*/) throws Exception{
+		board = new Board();
 	}
 	
 	public void play() throws Exception{
@@ -38,6 +38,6 @@ public class TrilmaClient {
 	}
 	
 	public static void main(String args[]) throws Exception{
-		
+			TrilmaClient klient = new TrilmaClient();
 	}
 }
