@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-12-12T21:07:30.566Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36" etag="ckMGLapbI3yvzHlHYaeN" version="14.0.1" type="github">
+<mxfile host="app.diagrams.net" modified="2020-12-16T00:38:12.759Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36" etag="MDNpD0jjIKwVraiSLs-J" version="14.0.1" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="2182" dy="725" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2182" dy="774" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -38,16 +38,16 @@
           <mxGeometry y="178" width="200" height="72" as="geometry" />
         </mxCell>
         <mxCell id="P3Boi44p3jtgZ2md4cfZ-4" value="Player" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="-590" y="570" width="250" height="220" as="geometry" />
+          <mxGeometry x="-630" y="570" width="380" height="220" as="geometry" />
         </mxCell>
         <mxCell id="P3Boi44p3jtgZ2md4cfZ-5" value="+ name: String&#xa;+ color: Color&#xa;+ socket: Socket&#xa;+ input: Scanner&#xa;+ output: PrintWriter" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="P3Boi44p3jtgZ2md4cfZ-4" vertex="1">
-          <mxGeometry y="26" width="250" height="84" as="geometry" />
+          <mxGeometry y="26" width="380" height="84" as="geometry" />
         </mxCell>
         <mxCell id="P3Boi44p3jtgZ2md4cfZ-6" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="P3Boi44p3jtgZ2md4cfZ-4" vertex="1">
-          <mxGeometry y="110" width="250" height="8" as="geometry" />
+          <mxGeometry y="110" width="380" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="P3Boi44p3jtgZ2md4cfZ-7" value="+ Player(Socket, String, Color)&#xa;+ run(): void&#xa;- setup(): void&#xa;- processCommands(): void&#xa;- processMoveCommand(Point, Point): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="P3Boi44p3jtgZ2md4cfZ-4" vertex="1">
-          <mxGeometry y="118" width="250" height="102" as="geometry" />
+        <mxCell id="P3Boi44p3jtgZ2md4cfZ-7" value="+ Player(Socket, String, Color)&#xa;+ run(): void&#xa;- setup(): void&#xa;- processCommands(): void&#xa;- processMoveCommand(int begI, int begJ, int endI, int endJ): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="P3Boi44p3jtgZ2md4cfZ-4" vertex="1">
+          <mxGeometry y="118" width="380" height="102" as="geometry" />
         </mxCell>
         <mxCell id="P3Boi44p3jtgZ2md4cfZ-12" value="Peg" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-40" y="275" width="160" height="210" as="geometry" />
@@ -119,16 +119,16 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="kYy_7Y2Fd9dhygYP-oi2-2" value="Game" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="-710" y="260" width="270" height="170" as="geometry" />
+          <mxGeometry x="-790" y="260" width="440" height="170" as="geometry" />
         </mxCell>
         <mxCell id="kYy_7Y2Fd9dhygYP-oi2-3" value="- board: Field[][]&#xa;- players: Player[]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="kYy_7Y2Fd9dhygYP-oi2-2" vertex="1">
-          <mxGeometry y="26" width="270" height="64" as="geometry" />
+          <mxGeometry y="26" width="440" height="64" as="geometry" />
         </mxCell>
         <mxCell id="kYy_7Y2Fd9dhygYP-oi2-4" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="kYy_7Y2Fd9dhygYP-oi2-2" vertex="1">
-          <mxGeometry y="90" width="270" height="8" as="geometry" />
+          <mxGeometry y="90" width="440" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="kYy_7Y2Fd9dhygYP-oi2-5" value="+ Game(int playersNumber)&#xa;+ winner(): Player&#xa;+ move(Point, Point, Player): void {synchronized}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="kYy_7Y2Fd9dhygYP-oi2-2" vertex="1">
-          <mxGeometry y="98" width="270" height="72" as="geometry" />
+        <mxCell id="kYy_7Y2Fd9dhygYP-oi2-5" value="+ Game(int playersNumber)&#xa;+ addPlayer(Player player): void&#xa;+ winner(): Player&#xa;+ move(int begI, int begJ, int endI, int endJ, Player player): void {synchronized}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="kYy_7Y2Fd9dhygYP-oi2-2" vertex="1">
+          <mxGeometry y="98" width="440" height="72" as="geometry" />
         </mxCell>
         <mxCell id="kYy_7Y2Fd9dhygYP-oi2-12" value="" style="endArrow=open;startArrow=circlePlus;endFill=0;startFill=0;endSize=8;html=1;exitX=0.467;exitY=1.029;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="kYy_7Y2Fd9dhygYP-oi2-5" target="P3Boi44p3jtgZ2md4cfZ-4" edge="1">
           <mxGeometry width="160" relative="1" as="geometry">
@@ -181,10 +181,10 @@
         <mxCell id="uC4lMjQUzB0orpD_JvIB-3" value="+ Board(int): Field" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="uC4lMjQUzB0orpD_JvIB-0" vertex="1">
           <mxGeometry y="60" width="160" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="yNwzJa3b2GLb2ZnY-UvL-1" value="«interface»&lt;br&gt;&lt;b&gt;Runnable&lt;/b&gt;" style="html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+        <mxCell id="yNwzJa3b2GLb2ZnY-UvL-1" value="«interface»&lt;br&gt;&lt;b&gt;Runnable&lt;/b&gt;" style="html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-330" y="430" width="110" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="yNwzJa3b2GLb2ZnY-UvL-2" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;exitX=0.592;exitY=-0.014;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="P3Boi44p3jtgZ2md4cfZ-4" target="yNwzJa3b2GLb2ZnY-UvL-1">
+        <mxCell id="yNwzJa3b2GLb2ZnY-UvL-2" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;exitX=0.592;exitY=-0.014;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="P3Boi44p3jtgZ2md4cfZ-4" target="yNwzJa3b2GLb2ZnY-UvL-1" edge="1">
           <mxGeometry width="160" relative="1" as="geometry">
             <mxPoint x="-220" y="450" as="sourcePoint" />
             <mxPoint x="-60" y="450" as="targetPoint" />
