@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 import gameobjects.*;
 
 public class TrilmaClient {
@@ -22,15 +23,49 @@ public class TrilmaClient {
 	private JLabel messageLabel;
 	private Board board;
 	
-	private Field selectedField;
-	private Field targetField;
+	private Field selectedField=null; //Set these two fields to null after (in)valid move!
+	private Field targetField=null;
 	
 	private Socket socket;
 	private Scanner input;
 	private PrintWriter output;
 	
-	public TrilmaClient(/*String serverAddress*/) throws Exception{
-		board = new Board();
+	public TrilmaClient() throws Exception{
+		socket=new Socket("127.0.0.1", 58901);
+		input=new Scanner(socket.getInputStream());
+		output=new PrintWriter(socket.getOutputStream(), true);
+		
+		messageLabel.setBackground(Color.LIGHT_GRAY);
+		frame.getContentPane().add(messageLabel/*, BorderLayer.SOUTH*/);
+		
+		board=new Board();
+		//board.setBackground(Color.WHITE);
+		board.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				int r=-1, p=-1;
+				Field clickedField=null;
+				for(int i=0; i<board.fields.length; i++) {
+					for(int j=0; j<board.fields[i].length; j++) {
+						if(board.fields[i][j].contains(e.getPoint())) {
+							clickedField=board.fields[i][j];
+							r=i; 
+							p=j;
+							break;
+						}
+					}
+				}
+				if(clickedField==null)
+					return;
+				if(selectedField==null) {
+					selectedField=clickedField; 			//validate selection by request here and if (INVALID SELECTION ?)
+					output.println("SELECT "+ r + "|" + p);	//answer in play(), reset to null
+				}
+				else {
+					targetField=clickedField;
+					output.println("MOVE "+ r + "|" + p);
+				}
+			}
+		});
 	}
 	
 	public void play() throws Exception{
@@ -38,6 +73,11 @@ public class TrilmaClient {
 	}
 	
 	public static void main(String args[]) throws Exception{
-			TrilmaClient klient = new TrilmaClient();
+		TrilmaClient client = new TrilmaClient();
+        client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        client.frame.setSize(320, 320);
+        client.frame.setVisible(true);
+        client.frame.setResizable(false);
+        client.play();
 	}
 }

@@ -1,7 +1,6 @@
 package connection;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -10,18 +9,26 @@ import java.util.Scanner;
 import gameobjects.Field;
 
 public class Game {
-	private Field[][] board;
+	private Field[][] board; //possibly will be changed to Player[][], Shapes not needed here
 	private Player[] players;
 	
-	public Game(int playersNumber) {
-		this.players=new Player[playersNumber];
+	public Game(int numberOfPlayers) {
+		this.players=new Player[numberOfPlayers];
+		this.board=new Field[17][13];
+	}
+	
+	public void addPlayer(Player player) {
+		for(Player p : players)
+			if(p.equals(player))
+				return;
+		players[players.length]=player;
 	}
 	
 	public Player winner() {
 		return null;
 	}
 	
-	public synchronized void move(Point beg, Point end, Player player) {
+	public synchronized void move(int begI, int begJ, int endI, int endJ, Player player) {
 		
 	}
 	
@@ -49,10 +56,10 @@ public class Game {
 		}
 		
 		private void processCommands() {
-			
+			int[] selection=new int[2];
 		}
 		
-		private void processMoveCommand(Point beg, Point end) {
+		private void processMoveCommand(int begI, int begJ, int endI, int endJ) {
 			
 		}
 	}
