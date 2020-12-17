@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 
 import gameobjects.*;
 
-public class TrilmaClient {
+public class TrilmaClient implements ITrilmaClient{
 	private JFrame frame;
 	private JLabel messageLabel;
 	private Board board;

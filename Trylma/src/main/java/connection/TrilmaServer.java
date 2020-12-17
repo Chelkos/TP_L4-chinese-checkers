@@ -3,6 +3,9 @@ package connection;
 import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import exceptions.CreatingPlayerException;
+
 import java.awt.Color;
 
 /*
@@ -31,9 +34,13 @@ public class TrilmaServer {
             while (true) {
                 Game game = new Game(n);
                 for(int i=0; i<n; i++) {
-                	var player=game.new Player(listener.accept(), defaultPlayerName[i], defaultPlayerColor[i]);
-                	game.addPlayer(player);
+                	try {
+                	Game.Player player=game.addPlayer(listener.accept(), defaultPlayerName[i], defaultPlayerColor[i]);
                 	pool.execute(player);
+                	} catch(CreatingPlayerException e) {
+                		System.out.println(e.getMessage());
+                		i--;
+                	}
                 }
                 game.randomizePlayer();
             }

@@ -7,9 +7,10 @@ import java.net.Socket;
 import java.util.Random;
 import java.util.Scanner;
 
+import exceptions.CreatingPlayerException;
 import gameobjects.Field;
 
-public class Game {
+public class Game implements IGame{
 	private Field[][] board; //possibly will be changed to Player[][], Shapes not needed here
 	private Player[] players;
 	private Player currentPlayer;
@@ -19,11 +20,19 @@ public class Game {
 		this.board=new Field[17][13];
 	}
 	
-	public void addPlayer(Player player) {
+	public Player addPlayer(Socket socket, String name, Color color) throws CreatingPlayerException{
 		for(Player p : players)
-			if(p.equals(player))
-				return;
-		players[players.length]=player;
+			if(p.color.equals(color))
+				throw new CreatingPlayerException("Player already exists!");
+		int i=0;
+		while(players[i]!=null) { i++; }
+		if(i<players.length) {
+			Player player=new Player(socket, name, color);
+			players[i]=player;
+			return player;
+		}
+		else
+			throw new CreatingPlayerException("Too many players!");
 	}
 	
 	public void randomizePlayer() {
@@ -42,7 +51,7 @@ public class Game {
 		
 	}
 	
-	class Player implements Runnable{
+	public class Player implements Runnable {
 		public String name;
 		public Color color;
 		public Socket socket;
