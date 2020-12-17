@@ -38,10 +38,10 @@ public class Board extends JFrame{
       	  for(int i = 0 ;i<20;i++)
       		fields[k][i]=null;
         drawBoardBorders(height);
-        drawFieldsBase1();
-        drawFieldsBase2();
-        drawFieldsBase3();
-        drawFieldsBase4();
+        
+       drawFieldsBases();
+       drawInnerField1();
+       drawInnerField2();
         setSize(height,height);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBackground(Color.WHITE);
@@ -53,8 +53,10 @@ public class Board extends JFrame{
         	{
         		if(fields[k][i]==null)
         			System.out.print("X ");
-        		else
+        		else if(fields[k][i].getClass()==BaseField.class)
         			System.out.print("Pb");
+        		else
+        			System.out.print("Pi");
         		
         	}
         	System.out.println("");
@@ -66,8 +68,16 @@ public class Board extends JFrame{
         David_Star.add(new Polygon(new int[] {p1.x, p2.x,p3.x }, new int[] {p1.y, p2.y, p3.y}, 3));
         David_Star.add(new Polygon(new int[] {p4.x, p5.x, p6.x}, new int[] {p4.y, p5.y, p6.y}, 3));
 	}
+	public void drawFieldsBases() {
+        drawFieldsBase1();
+        drawFieldsBase2();
+        drawFieldsBase3();
+        drawFieldsBase4();
+        drawFieldsBase5();
+        drawFieldsBase6();
+	}
 	public void drawFieldsBase1(){
-		p5.y+=r*0.8;
+		p5.y+=r*1.3;
 		p5.x-=0.5*r;
 		for(int k = 0;k<4;k++) {
 			for(int i=4;i<k+5;i++) {
@@ -93,23 +103,6 @@ public class Board extends JFrame{
       		 p1.x-= (height*0.045*(7-k+0.5));
       	 }
 	}
-	/*public void drawInnerField1()
-	{
-		
-		 for(int k = 0;k<4;k++)
-      	 {
-      		 for(int i=5;i<9-k;i++)
-      		 {
-      			fields[k][i] = new BaseField(p1.x,p1.y,r,Color.black);
-      			 p1.x += (height*0.045);
-      		 }
-      		 p1.y+=r*(height*0.0014375);
-      		 p1.x-= (height*0.045*(3-k+0.5));
-      	 }
-		
-		
-		
-	}*/
 	public void drawFieldsBase3() {
 		p3.y+=(height*0.005);
 		p3.x-=(height*0.022)+r;
@@ -135,9 +128,57 @@ public class Board extends JFrame{
    	 	}
 	}
 	public void drawFieldsBase5() {
-		
-		
-		
+		p6.y-=r*4.5;
+		p6.x-=3.5*r;
+		for(int k = 9;k<13;k++) {
+			for(int i=13;i<14+(k-1)%4;i++) {
+				fields[k][i] = new BaseField(p6.x,p6.y,r,Color.blue);  			
+				p6.x-= (height*0.045);
+			}
+			p6.y+=r*(height*0.0014375);
+			p6.x+=height*0.045*(k-7.5);
+   	 	}
+	}
+	public void drawFieldsBase6() {
+		p2.y-=2.4*r;
+		p2.x-=0.5*r;
+		for(int k = 16;k>=13;k--) {
+			for(int i=12;i>8+k-13;i--) {
+				fields[k][i] = new BaseField(p2.x,p2.y,r,Color.blue);  			
+				p2.x-= (height*0.045);
+			}
+			p2.y-=r*(height*0.0014375);
+			p2.x-=height*0.045*(k-17.5);
+			
+   	 	}
+	}
+	public void drawInnerField1() {
+		p1.y-=r*5.7;
+		p1.x+=r*2.4;
+		for(int k = 4;k<9;k++)
+		{
+			for(int i=4;i<5+k;i++) {
+				fields[k][i] = new InnerField(p1.x,p1.y,r);  		
+				 p1.x += (height*0.05);
+			}
+			p1.y+=r*1.2;
+			 p1.x -= (height*0.05*(k+1.5));
+		}
+	}
+	public void drawInnerField2() {
+		p1.x+=r*1.4;
+
+		for(int k=9;k<13;k++)
+		{
+			for(int i=5+k-9;i<13;i++)
+			{
+				fields[k][i] = new InnerField(p1.x,p1.y,r);  
+				p1.x+= (height*0.05);
+				
+			}
+			p1.y+=r*1.2;
+			 p1.x -= (height*0.05*(16.5-k));
+		}
 	}
 	public void paint(Graphics g){
    	 Graphics2D g2 = (Graphics2D) g;
