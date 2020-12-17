@@ -35,6 +35,7 @@ public class TrilmaServer {
                 	game.addPlayer(player);
                 	pool.execute(player);
                 }
+                game.randomizePlayer();
             }
         }
 	}
