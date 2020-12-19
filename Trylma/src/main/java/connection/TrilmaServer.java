@@ -24,12 +24,12 @@ public class TrilmaServer {
 			System.out.println("Wrong argument!");
 			return;
 		}
-		if(n!=2 || n!=4 || n!=5 || n!=6) {
+		if(!(n==2 || n==3 || n==4 || n==6)) {
 			System.out.println("Wrong number of players!");
 			return;
 		}
 		try (ServerSocket listener = new ServerSocket(58901)) {
-            System.out.println("Tic Tac Toe Server is Running...");
+            System.out.println("Original Trilma Server is Running...");
             ExecutorService pool = Executors.newFixedThreadPool(200);
             while (true) {
                 Game game = new Game(n);

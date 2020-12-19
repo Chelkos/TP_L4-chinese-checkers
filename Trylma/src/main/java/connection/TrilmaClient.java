@@ -32,6 +32,7 @@ public class TrilmaClient implements ITrilmaClient{
 	
 	public TrilmaClient() throws Exception{
 		frame = new JFrame();
+		messageLabel = new JLabel();
 		socket=new Socket("127.0.0.1", 58901);
 		input=new Scanner(socket.getInputStream());
 		output=new PrintWriter(socket.getOutputStream(), true);
@@ -41,7 +42,7 @@ public class TrilmaClient implements ITrilmaClient{
         frame.setSize(320, 320);
         frame.setVisible(true);
         frame.setResizable(false);
-		board=new Board();
+		board=new Board(1);
 		//board.setBackground(Color.WHITE);
 		board.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -49,10 +50,13 @@ public class TrilmaClient implements ITrilmaClient{
 				Field clickedField=null;
 				for(int i=0; i<board.fields.length; i++) {
 					for(int j=0; j<board.fields[i].length; j++) {
-						if(board.fields[i][j].contains(e.getPoint())) {
-							clickedField=board.fields[i][j];
+						if(board.fields[j][i]!=null && board.fields[j][i].contains(e.getPoint())) {
+							clickedField=board.fields[j][i];
+						
 							r=i; 
 							p=j;
+							System.out.print(i);
+							System.out.println(" "+j);
 							break;
 						}
 					}

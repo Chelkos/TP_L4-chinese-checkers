@@ -22,7 +22,9 @@ public class Board extends JFrame{
     public Point p1,p2,p3,p4,p5,p6;
     public int r;
     public int tabx,taby;
-	public Board(){
+    public int NoPlayers;
+	public Board(int NoPlayers){
+		this.NoPlayers=NoPlayers;
 		height = 800;
 		this.fields = new Field[20][20];
 		this.David_Star = new ArrayList<Shape>();
@@ -189,7 +191,21 @@ public class Board extends JFrame{
     	 for(int i=0;i<20;i++)
     	 {
     		 if(fields[k][i]!=null)
-    		 g2.draw(fields[k][i]);
+    		 {
+    			 if(fields[k][i].visitor!=null)
+    			 {
+    			 g2.setColor(fields[k][i].visitor.getOwnerColor());		
+    			 g2.fill(fields[k][i]);
+    			 }
+    			 else
+    			 {
+    			 g2.setColor(Color.black);
+    			 }
+    			 
+    			 g2.draw(fields[k][i]);
+    			 g2.setColor(Color.black);
+    		 
+    		 }
     	 }
     }
 
