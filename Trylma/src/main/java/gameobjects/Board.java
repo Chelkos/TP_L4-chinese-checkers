@@ -201,7 +201,7 @@ public class Board extends JFrame{
     			 {
     			 g2.setColor(Color.black);
     			 }
-    			 
+    		
     			 g2.draw(fields[k][i]);
     			 g2.setColor(Color.black);
     		 
