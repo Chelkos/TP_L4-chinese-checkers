@@ -31,13 +31,16 @@ public class TrilmaClient implements ITrilmaClient{
 	private PrintWriter output;
 	
 	public TrilmaClient() throws Exception{
+		frame = new JFrame();
 		socket=new Socket("127.0.0.1", 58901);
 		input=new Scanner(socket.getInputStream());
 		output=new PrintWriter(socket.getOutputStream(), true);
-		
 		messageLabel.setBackground(Color.LIGHT_GRAY);
 		frame.getContentPane().add(messageLabel/*, BorderLayer.SOUTH*/);
-		
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(320, 320);
+        frame.setVisible(true);
+        frame.setResizable(false);
 		board=new Board();
 		//board.setBackground(Color.WHITE);
 		board.addMouseListener(new MouseAdapter() {
@@ -74,10 +77,6 @@ public class TrilmaClient implements ITrilmaClient{
 	
 	public static void main(String args[]) throws Exception{
 		TrilmaClient client = new TrilmaClient();
-        client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        client.frame.setSize(320, 320);
-        client.frame.setVisible(true);
-        client.frame.setResizable(false);
         client.play();
 	}
 }

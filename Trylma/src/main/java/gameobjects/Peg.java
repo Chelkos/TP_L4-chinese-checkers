@@ -13,6 +13,7 @@ public class Peg {
 	
 	public Peg(Color ownerColor){
 		this.ownerColor=ownerColor;
+		this.in_base=false;
 	}
 	public Color getOwnerColor(){
 		return this.ownerColor;
@@ -21,6 +22,7 @@ public class Peg {
 		return in_base; //TO BE DONE
 	}
 	public void visit(BaseField field){
+		if(field.getOwnerColor()==this.ownerColor)
 		this.in_base=true;
 	}
 	public void visit(InnerField field){
