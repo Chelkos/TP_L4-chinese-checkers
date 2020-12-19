@@ -9,16 +9,18 @@ import java.util.Scanner;
 
 import exceptions.CreatingPlayerException;
 import exceptions.IllegalMoveException;
+import exceptions.InvalidSelectException;
 import gameobjects.Field;
+import gameobjects.Peg;
 
 public class Game {
-	private Field[][] board; //possibly will be changed to Player[][], Shapes not needed here
-	private Player[] players;
+	private Peg[][] board; //possibly will be changed to Player[][], Shapes not needed here
+	private Player[] players; //players in game
 	private Player currentPlayer;
 	
 	public Game(int numberOfPlayers) {
 		this.players=new Player[numberOfPlayers];
-		this.board=new Field[17][13];
+		this.board=new Peg[17][13];
 	}
 	
 	public Player addPlayer(Socket socket, String name, Color color) throws CreatingPlayerException{
@@ -44,7 +46,14 @@ public class Game {
 		return false;
 	}
 	
-	public synchronized void select(int i, int j, Player player) {
+	public synchronized void select(int i, int j, Player player) throws InvalidSelectException{
+		if(player!=currentPlayer)
+			throw new InvalidSelectException("Not your turn!");
+		else if(board[i][j]==null)
+			throw new InvalidSelectException("This is empty field!");
+		else if(board[i][j].getOwnerColor()!=currentPlayer.color)
+			throw new InvalidSelectException("This is not your peg!");
+		
 	}
 	
 	public synchronized void move(int begI, int begJ, int endI, int endJ, Player player) {
