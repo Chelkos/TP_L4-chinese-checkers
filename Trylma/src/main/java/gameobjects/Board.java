@@ -116,7 +116,7 @@ public class Board extends JFrame{
 		for(int k = 4;k<8;k++){
 			for(int i = 12; i>4+k;i--) {
 				fields[k][i] = new BaseField(p3.x,p3.y,r,Color.black);
-				if(NoPlayers== 3 || NoPlayers == 4|| NoPlayers == 6)
+				if(NoPlayers== 3 ||  NoPlayers == 6)
 					fields[k][i].visitor = new Peg(Color.magenta);
      			 p3.x -= (height*0.045);
      			
@@ -131,6 +131,8 @@ public class Board extends JFrame{
 		for(int k = 12;k>8;k--) {
 			for(int i=4;i<(k%8)+4;i++) {
 				fields[k][i] = new BaseField(p4.x,p4.y,r,Color.blue);  			
+				if( NoPlayers == 6)
+					fields[k][i].visitor = new Peg(Color.green);
 				p4.x += (height*0.045);
 			}
 			p4.y-=r*(height*0.0014375);
@@ -142,7 +144,10 @@ public class Board extends JFrame{
 		p6.x-=3.5*r;
 		for(int k = 9;k<13;k++) {
 			for(int i=13;i<14+(k-1)%4;i++) {
-				fields[k][i] = new BaseField(p6.x,p6.y,r,Color.blue);  			
+			
+				fields[k][i] = new BaseField(p6.x,p6.y,r,Color.blue);  		
+				if(NoPlayers== 4 ||  NoPlayers == 6)
+					fields[k][i].visitor = new Peg(Color.cyan);
 				p6.x-= (height*0.045);
 			}
 			p6.y+=r*(height*0.0014375);

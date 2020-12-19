@@ -42,7 +42,7 @@ public class TrilmaClient implements ITrilmaClient{
         frame.setSize(320, 320);
         frame.setVisible(true);
         frame.setResizable(false);
-		board=new Board(2);
+		board=new Board(6);
 		//board.setBackground(Color.WHITE);
 		board.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
