@@ -11,7 +11,7 @@ import exceptions.CreatingPlayerException;
 import exceptions.IllegalMoveException;
 import gameobjects.Field;
 
-public class Game implements IGame{
+public class Game {
 	private Field[][] board; //possibly will be changed to Player[][], Shapes not needed here
 	private Player[] players;
 	private Player currentPlayer;
@@ -51,7 +51,7 @@ public class Game implements IGame{
 		
 	}
 	
-	public class Player implements Runnable {
+	class Player implements Runnable {
 		public String name;
 		public Color color;
 		public Socket socket;
@@ -75,24 +75,22 @@ public class Game implements IGame{
 		}
 		
 		private void processCommands() {
-			int[] selection=new int[2];
-			
-			 while (input.hasNextLine()) {
-	                String command = input.nextLine();
-	                if (command.startsWith("QUIT")) {
-	                    return;
-	                } else if (command.startsWith("SELECT")) {
-	                	selection[0]=Integer.parseInt(command.substring(7,command.indexOf('|')));
-	                	selection[1]=Integer.parseInt(command.substring(command.indexOf('|')));
-	                    processSelectCommand(selection[0],selection[1]);
-	                }else if (command.startsWith("MOVE")) {
-	                	int i,j;
-	                	i=Integer.parseInt(command.substring(5,command.indexOf('|')));
-	                	j=Integer.parseInt(command.substring(command.indexOf('|')));
-	                    processMoveCommand(selection[0],selection[1],i,j);
-	                }
+			int[] selection=new int[2];			
+			while (input.hasNextLine()) {
+				String command = input.nextLine();
+	            if (command.startsWith("QUIT")) {
+	                return;
+	            } else if (command.startsWith("SELECT")) {
+	             	selection[0]=Integer.parseInt(command.substring(7,command.indexOf('|')));
+	               	selection[1]=Integer.parseInt(command.substring(command.indexOf('|')));
+	                processSelectCommand(selection[0],selection[1]);
+	            } else if (command.startsWith("MOVE")) {
+	                int i,j;
+	               	i=Integer.parseInt(command.substring(5,command.indexOf('|')));
+	               	j=Integer.parseInt(command.substring(command.indexOf('|')));
+	                processMoveCommand(selection[0],selection[1],i,j);
 	            }
-
+	        }
 		}
 		
 		private void processSelectCommand(int i, int j) {
