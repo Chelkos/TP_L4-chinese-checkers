@@ -25,6 +25,10 @@ public class Game {
 		this.board=new Peg[17][13];
 	}
 	
+	public void randomizePlayer() {
+		currentPlayerIndex=new Random().nextInt(players.length);
+	}
+	
 	public Player addPlayer(Socket socket, String name, Color color) throws CreatingPlayerException{
 		for(Player p : players)
 			if(p.color.equals(color))
@@ -38,11 +42,6 @@ public class Game {
 		}
 		else
 			throw new CreatingPlayerException("Too many players!");
-	}
-	
-	public void randomizePlayer() {
-		currentPlayerIndex=new Random().nextInt(players.length);
-		currentPlayer=players[currentPlayerIndex];
 	}
 	
 	public boolean hasWinner() {
@@ -60,7 +59,7 @@ public class Game {
 			throw new InvalidSelectException("This is empty field!");
 		else if(board[i][j].getOwnerColor()!=currentPlayer.color)
 			throw new InvalidSelectException("This is not your peg!");
-		
+		selection[0]=i; selection[1]=j;
 	}
 	
 	public synchronized void move(int begI, int begJ, int endI, int endJ, Player player) throws IllegalMoveException{
@@ -88,12 +87,35 @@ public class Game {
 		
 		@Override
 		public void run() {
+			try {
+				setup();
+				processCommands();
+			} catch(Exception e) {
+				e.printStackTrace();
+			} finally {
+				for(Player p : players)
+					if(p!=null && p.output!=null) {
+						output.println("PLAYER_LEFT: " + p.name);
+						break;
+					}
+				try {
+					socket.close();
+				} catch(IOException e) { }
+			}
 			
 		}
 		
 		private void setup() throws IOException{
 			input=new Scanner(socket.getInputStream());
 			output=new PrintWriter(socket.getOutputStream(), true);
+			output.println("WELCOME " + name);
+			if(color==players[players.length-1].color) {
+				currentPlayer=players[currentPlayerIndex];
+				currentPlayer.output.println("MESSAGE Your move");
+			} else {
+				output.println("MESSAGE Waiting for opponents");
+			}
+				
 		}
 		
 		private void processCommands() {			
@@ -102,14 +124,15 @@ public class Game {
 	            if (command.startsWith("QUIT")) {
 	                return;
 	            } else if (command.startsWith("SELECT")) {
-	             	selection[0]=Integer.parseInt(command.substring(7,command.indexOf('|')));
-	               	selection[1]=Integer.parseInt(command.substring(command.indexOf('|')));
-	                processSelectCommand(selection[0],selection[1]);
-	            } else if (command.startsWith("MOVE")) {
-	                int i,j;
-	               	i=Integer.parseInt(command.substring(5,command.indexOf('|')));
+	            	int i, j;
+	             	i=Integer.parseInt(command.substring(7,command.indexOf('|')));
 	               	j=Integer.parseInt(command.substring(command.indexOf('|')));
-	                processMoveCommand(selection[0],selection[1],i,j);
+	                processSelectCommand(i, j);
+	            } else if (command.startsWith("MOVE")) {
+	                int endI, endJ;
+	               	endI=Integer.parseInt(command.substring(5,command.indexOf('|')));
+	               	endJ=Integer.parseInt(command.substring(command.indexOf('|')));
+	                processMoveCommand(selection[0], selection[1], endI, endJ);
 	            }
 	        }
 		}
@@ -129,7 +152,7 @@ public class Game {
 				output.println("VALID_MOVE");
 				for(Player p : players)
 					if(!p.equals(this))
-						p.output.println("MOVE " + this.name + " " + begI + "|" + begJ + "TO " + endI + "|" + endJ);
+						p.output.println("MOVE " + this.name + " " + begI + "|" + begJ + " TO " + endI + "|" + endJ);
 				if(hasWinner()) {
 					output.println("VICTORY");
 					for(Player p : players)
