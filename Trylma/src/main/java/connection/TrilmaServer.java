@@ -35,7 +35,12 @@ public class TrilmaServer {
                 Game game = new Game(n);
                 game.randomizePlayer(); 
                 for(int i=0; i<n; i++) {
-                	pool.execute(game.new Player(listener.accept(), defaultPlayerName[i], defaultPlayerColor[i]));
+                	try {
+                	Game.Player player=game.addPlayer(listener.accept(), defaultPlayerName[i], defaultPlayerColor[i]);
+                	pool.execute(player);
+                	} catch(CreatingPlayerException e) {
+                		System.out.println(e.getMessage());
+                	}
                 }
                 game.setup();
             }

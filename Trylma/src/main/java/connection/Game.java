@@ -64,11 +64,19 @@ public class Game {
 		}
 	}
 	
-	public void addPlayer(Player player) {
+	public synchronized Player addPlayer(Socket socket, String name, Color color) throws CreatingPlayerException{
+		for(Player p : players)
+			if(p.color.equals(color))
+				throw new CreatingPlayerException("Player already exists!");
 		int i=0;
 		while(players[i]!=null) { i++; }
-		if(i<players.length)
+		if(i<players.length) {
+			Player player=new Player(socket, name, color);
 			players[i]=player;
+			return player;
+		}
+		else
+			throw new CreatingPlayerException("Too many players!");
 	}
 	
 	public boolean hasWinner() {
@@ -121,7 +129,6 @@ public class Game {
 			this.socket=socket;
 			this.name=name;
 			this.color=color;
-			addPlayer(this);
 		}
 		
 		@Override
