@@ -40,9 +40,9 @@ public class TrilmaServer {
                 	pool.execute(player);
                 	} catch(CreatingPlayerException e) {
                 		System.out.println(e.getMessage());
-                		i--;
                 	}
                 }
+                game.setup();
             }
         }
 	}

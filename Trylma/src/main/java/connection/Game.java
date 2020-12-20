@@ -10,23 +10,51 @@ import java.util.Scanner;
 import exceptions.CreatingPlayerException;
 import exceptions.IllegalMoveException;
 import exceptions.InvalidSelectException;
-import gameobjects.Field;
 import gameobjects.Peg;
 
 public class Game {
 	private Peg[][] board; //server version of board, only info about players needed, so Pegs instead of Fields
+	private Player[][] baseField; //if field is a base of certain player, then returns this player, else null
 	private Player[] players; //players in game
 	private Player currentPlayer;
 	private int currentPlayerIndex;
-	private int[] selection=new int[2];
+	private int[] selection=new int[2]; //auxiliary variable for selection of field
 	
 	public Game(int numberOfPlayers) {
 		this.players=new Player[numberOfPlayers];
-		this.board=new Peg[17][13];
+		this.board=new Peg[17][17];
+		this.baseField=new Player[17][17];
 	}
 	
 	public void randomizePlayer() {
 		currentPlayerIndex=new Random().nextInt(players.length);
+		currentPlayer=players[currentPlayerIndex];
+	}
+	
+	public void setup() {
+		int n=players.length;
+		if(n==2) {
+			for(int i=0; i<=3; i++) {
+				for(int j=0; j<=i; j++) {
+					board[7-i][3-j]=new Peg(players[0].color); //set top triangle pegs for one player
+					baseField[7-i][3-j]=players[1]; //set top triangle as target for the other player
+					board[9+i][13+j]=new Peg(players[1].color); //do reverse for bottom triangle
+					baseField[9+i][13+j]=players[0];
+				}
+			}
+		} else if(n==3) {
+			for(int i=0; i<=3; i++) {
+				for(int j=0; j<=i; j++) {
+					board[9+i][13+j]=new Peg(players[0].color); 
+					baseField[7-i][3-j]=players[0]; 
+
+				}
+			}
+		} else if(n==4) {
+			
+		} else if(n==6) {
+			
+		}
 	}
 	
 	public Player addPlayer(Socket socket, String name, Color color) throws CreatingPlayerException{
@@ -67,9 +95,20 @@ public class Game {
 			throw new IllegalMoveException("Not your turn!");
 		else if(board[endI][endJ]!=null)
 			throw new IllegalMoveException("This field is occupied!");
+		else if(board[begI][begJ].inBase() && baseField[endI][endJ]==null)
+			throw new IllegalMoveException("You can't move out of base!");
 		board[endI][endJ]=board[begI][begJ]; board[begI][begJ]=null;
+		if(baseField[endI][endJ]==currentPlayer)
+			//board[endI][endJ].enterBase()
+			;
+	}
+	
+	public synchronized void endTurn(Player player) throws Exception{
+		if(player!=currentPlayer)
+			throw new Exception("Not your turn!");
 		currentPlayerIndex=(currentPlayerIndex+1)%(players.length);
 		currentPlayer=players[currentPlayerIndex];
+		selection[0]=-1; selection[1]=-1;
 	}
 	
 	class Player implements Runnable {
@@ -88,7 +127,7 @@ public class Game {
 		@Override
 		public void run() {
 			try {
-				setup();
+				this.setup();
 				processCommands();
 			} catch(Exception e) {
 				e.printStackTrace();
@@ -110,7 +149,6 @@ public class Game {
 			output=new PrintWriter(socket.getOutputStream(), true);
 			output.println("WELCOME " + name);
 			if(color==players[players.length-1].color) {
-				currentPlayer=players[currentPlayerIndex];
 				currentPlayer.output.println("MESSAGE Your move");
 			} else {
 				output.println("MESSAGE Waiting for opponents");
@@ -133,6 +171,8 @@ public class Game {
 	               	endI=Integer.parseInt(command.substring(5,command.indexOf('|')));
 	               	endJ=Integer.parseInt(command.substring(command.indexOf('|')));
 	                processMoveCommand(selection[0], selection[1], endI, endJ);
+	            } else if (command.startsWith("END_TURN")) {
+	            	processEndTurnCommand();
 	            }
 	        }
 		}
@@ -152,7 +192,7 @@ public class Game {
 				output.println("VALID_MOVE");
 				for(Player p : players)
 					if(!p.equals(this))
-						p.output.println("MOVE " + this.name + " " + begI + "|" + begJ + " TO " + endI + "|" + endJ);
+						p.output.println("MOVE " + this.name + ":" + begI + "|" + begJ + " TO " + endI + "|" + endJ);
 				if(hasWinner()) {
 					output.println("VICTORY");
 					for(Player p : players)
@@ -161,6 +201,15 @@ public class Game {
 				}
 			} catch(IllegalMoveException e) {
 				output.println("INVALID_MOVE" + e.getMessage());
+			}
+		}
+		
+		private void processEndTurnCommand() {
+			try {
+				endTurn(this);
+				output.println("MESSAGE End of turn");
+			} catch(Exception e) {
+				output.println(e.getMessage());
 			}
 		}
 	}
