@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.BorderLayout;
+import java.awt.Button;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Scanner;
@@ -22,7 +23,7 @@ public class TrilmaClient implements ITrilmaClient{
 	private JFrame frame;
 	private JLabel messageLabel;
 	private Board board;
-	
+	private Button end;
 	private Field selectedField=null; //Set these two fields to null after (in)valid move!
 	private Field targetField=null;
 	
@@ -30,7 +31,7 @@ public class TrilmaClient implements ITrilmaClient{
 	private Scanner input;
 	private PrintWriter output;
 	
-	public TrilmaClient() throws Exception{
+	public TrilmaClient(String NoPlayers) throws Exception{
 		frame = new JFrame();
 		messageLabel = new JLabel();
 		socket=new Socket("127.0.0.1", 58901);
@@ -39,10 +40,21 @@ public class TrilmaClient implements ITrilmaClient{
 		messageLabel.setBackground(Color.LIGHT_GRAY);
 		frame.getContentPane().add(messageLabel/*, BorderLayer.SOUTH*/);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(320, 320);
+        frame.setSize(800, 800);
         frame.setVisible(true);
         frame.setResizable(false);
-		board=new Board(6);
+        frame.setTitle("Czerwony");
+        try
+        {
+		board=new Board(Integer.parseInt(NoPlayers));
+        }
+        catch(NumberFormatException e)
+        {
+        		System.out.println("Invalid Number of players");
+        		return;
+        		
+        }
+        frame.add(board);
 		//board.setBackground(Color.WHITE);
 		board.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -80,7 +92,7 @@ public class TrilmaClient implements ITrilmaClient{
 	}
 	
 	public static void main(String args[]) throws Exception{
-		TrilmaClient client = new TrilmaClient();
+		TrilmaClient client = new TrilmaClient(args[0]);
         client.play();
 	}
 }

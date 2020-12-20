@@ -14,7 +14,7 @@ import java.awt.geom.Ellipse2D.Float;
 
 
 
-public class Board extends JFrame{
+public class Board extends JPanel{
 	
 	public Field fields[][];
 	public ArrayList<Field> Fields;
@@ -46,9 +46,9 @@ public class Board extends JFrame{
        drawInnerField1();
        drawInnerField2();
         setSize(height,height);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBackground(Color.WHITE);
-        setLocationRelativeTo(null);
+     //   setLocationRelativeTo(null);
         setVisible(true);
         for(int k=0;k<20;k++)
         {
