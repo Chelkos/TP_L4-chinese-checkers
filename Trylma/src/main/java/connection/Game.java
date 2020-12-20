@@ -28,7 +28,6 @@ public class Game {
 	
 	public void randomizePlayer() {
 		currentPlayerIndex=new Random().nextInt(players.length);
-		currentPlayer=players[currentPlayerIndex];
 	}
 	
 	public void setup() {
@@ -43,11 +42,18 @@ public class Game {
 				}
 			}
 		} else if(n==3) {
-			for(int i=0; i<=3; i++) {
+			for(int i=0; i<=3; i++) { //setup for first player
 				for(int j=0; j<=i; j++) {
 					board[9+i][13+j]=new Peg(players[0].color); 
 					baseField[7-i][3-j]=players[0]; 
-
+				}
+			}
+			for(int i=0; i<=3; i++) { //setup for second and third player
+				for(int j=0; j<=i; j++) {
+					board[i][4+j]=new Peg(players[1].color); 
+					board[9+i][4+j]=new Peg(players[2].color); 
+					baseField[7-i][12-j]=players[2];
+					baseField[16-i][12-j]=players[1];
 				}
 			}
 		} else if(n==4) {
@@ -57,7 +63,7 @@ public class Game {
 		}
 	}
 	
-	public Player addPlayer(Socket socket, String name, Color color) throws CreatingPlayerException{
+	public synchronized Player addPlayer(Socket socket, String name, Color color) throws CreatingPlayerException{
 		for(Player p : players)
 			if(p.color.equals(color))
 				throw new CreatingPlayerException("Player already exists!");
@@ -148,7 +154,8 @@ public class Game {
 			input=new Scanner(socket.getInputStream());
 			output=new PrintWriter(socket.getOutputStream(), true);
 			output.println("WELCOME " + name);
-			if(color==players[players.length-1].color) {
+			if(this==players[players.length-1]) {
+				currentPlayer=players[currentPlayerIndex];
 				currentPlayer.output.println("MESSAGE Your move");
 			} else {
 				output.println("MESSAGE Waiting for opponents");
