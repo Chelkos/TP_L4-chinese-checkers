@@ -14,9 +14,11 @@ import gameobjects.Field;
 import gameobjects.Peg;
 
 public class Game {
-	private Peg[][] board; //possibly will be changed to Player[][], Shapes not needed here
+	private Peg[][] board; //server version of board, only info about players needed, so Pegs instead of Fields
 	private Player[] players; //players in game
 	private Player currentPlayer;
+	private int currentPlayerIndex;
+	private int[] selection=new int[2];
 	
 	public Game(int numberOfPlayers) {
 		this.players=new Player[numberOfPlayers];
@@ -39,11 +41,16 @@ public class Game {
 	}
 	
 	public void randomizePlayer() {
-		currentPlayer=players[new Random().nextInt(players.length)];
+		currentPlayerIndex=new Random().nextInt(players.length);
+		currentPlayer=players[currentPlayerIndex];
 	}
 	
 	public boolean hasWinner() {
-		return false;
+		for(int i=0; i<board.length; i++)
+			for(int j=0; j<board[i].length; j++)
+				if(!board[i][j].inBase())
+					return false;
+		return true;
 	}
 	
 	public synchronized void select(int i, int j, Player player) throws InvalidSelectException{
@@ -56,8 +63,14 @@ public class Game {
 		
 	}
 	
-	public synchronized void move(int begI, int begJ, int endI, int endJ, Player player) {
-		
+	public synchronized void move(int begI, int begJ, int endI, int endJ, Player player) throws IllegalMoveException{
+		if(player!=currentPlayer)
+			throw new IllegalMoveException("Not your turn!");
+		else if(board[endI][endJ]!=null)
+			throw new IllegalMoveException("This field is occupied!");
+		board[endI][endJ]=board[begI][begJ]; board[begI][begJ]=null;
+		currentPlayerIndex=(currentPlayerIndex+1)%(players.length);
+		currentPlayer=players[currentPlayerIndex];
 	}
 	
 	class Player implements Runnable {
@@ -83,8 +96,7 @@ public class Game {
 			output=new PrintWriter(socket.getOutputStream(), true);
 		}
 		
-		private void processCommands() {
-			int[] selection=new int[2];			
+		private void processCommands() {			
 			while (input.hasNextLine()) {
 				String command = input.nextLine();
 	            if (command.startsWith("QUIT")) {
@@ -103,11 +115,30 @@ public class Game {
 		}
 		
 		private void processSelectCommand(int i, int j) {
-			
+			try {
+				select(i, j, this);
+				output.println("VALID_SELECTION");
+			} catch(InvalidSelectException e) {
+				output.println("INVALID_SELECTION" + e.getMessage());
+			}
 		}
 		
 		private void processMoveCommand(int begI, int begJ, int endI, int endJ) {
-			
+			try {
+				move(begI, begJ, endI, endJ, this);
+				output.println("VALID_MOVE");
+				for(Player p : players)
+					if(!p.equals(this))
+						p.output.println("MOVE " + this.name + " " + begI + "|" + begJ + "TO " + endI + "|" + endJ);
+				if(hasWinner()) {
+					output.println("VICTORY");
+					for(Player p : players)
+						if(!p.equals(this))
+							p.output.println("DEFEAT: " + this.name + " won");
+				}
+			} catch(IllegalMoveException e) {
+				output.println("INVALID_MOVE" + e.getMessage());
+			}
 		}
 	}
 }
