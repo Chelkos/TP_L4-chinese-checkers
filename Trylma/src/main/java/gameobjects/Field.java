@@ -13,7 +13,7 @@ import java.awt.geom.Ellipse2D.*;
 public abstract class Field extends Ellipse2D.Float{
 		protected Peg visitor;
 		protected float radius;
-		public abstract boolean accept(Peg peg);
+		public abstract void accept(Peg peg);
 		public Peg getVisitor(){
 			return this.visitor;
 		}

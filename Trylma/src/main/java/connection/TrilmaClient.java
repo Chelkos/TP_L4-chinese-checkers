@@ -14,6 +14,9 @@ import java.net.Socket;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -23,27 +26,37 @@ public class TrilmaClient implements ITrilmaClient{
 	private JFrame frame;
 	private JLabel messageLabel;
 	private Board board;
-	private Button end;
 	private Field selectedField=null; //Set these two fields to null after (in)valid move!
 	private Field targetField=null;
-	
+	private JMenu menu;
+	private JMenuItem NextTurnButton;
+	private JMenuBar mb;
 	private Socket socket;
 	private Scanner input;
 	private PrintWriter output;
-	
+	private JLabel colorName;
 	public TrilmaClient(String NoPlayers) throws Exception{
 		frame = new JFrame();
-		messageLabel = new JLabel();
+		colorName = new JLabel("Czerwony");
+		menu = new JMenu("Player options");
+		NextTurnButton = new JMenuItem("End Turn");
+		mb = new JMenuBar();
+		messageLabel = new JLabel("ELOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 		socket=new Socket("127.0.0.1", 58901);
 		input=new Scanner(socket.getInputStream());
 		output=new PrintWriter(socket.getOutputStream(), true);
 		messageLabel.setBackground(Color.LIGHT_GRAY);
-		frame.getContentPane().add(messageLabel/*, BorderLayer.SOUTH*/);
+		frame.add(colorName, BorderLayout.NORTH);
+		frame.getContentPane().add(messageLabel, BorderLayout.SOUTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 800);
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setTitle("Czerwony");
+        mb.add(menu);
+        frame.setJMenuBar(mb);
+        
+        menu.add(NextTurnButton);
         try
         {
 		board=new Board(Integer.parseInt(NoPlayers));
@@ -54,7 +67,7 @@ public class TrilmaClient implements ITrilmaClient{
         		return;
         		
         }
-        frame.add(board);
+        frame.add(board, BorderLayout.CENTER);
 		//board.setBackground(Color.WHITE);
 		board.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -87,10 +100,50 @@ public class TrilmaClient implements ITrilmaClient{
 		});
 	}
 	
-	public void play() throws Exception{
-		
-	}
-	
+    public void play() throws Exception {
+        try {
+            String response =  input.nextLine();
+            String trimmed1,trimmed2;
+           int begX,begY,endX,endY;
+            while ( input.hasNextLine()) {
+                response =  input.nextLine();
+                if (response.startsWith("VALID_MOVE") ) {
+                	 messageLabel.setText("Valid move, please wait");
+                	targetField.accept(selectedField.getVisitor());
+                	selectedField.accept(null);
+                	targetField = null;
+                	selectedField = null;
+                }else if(response.startsWith("MOVE")) {
+                	 trimmed1 = response.substring(response.indexOf("|"),response.indexOf("TO"));
+                	 trimmed2 = response.substring(response.indexOf("TO"));
+                	 begX = Integer.parseInt(trimmed1.substring(trimmed1.indexOf("|")+1,trimmed1.indexOf(":")));
+                	 begY = Integer.parseInt(trimmed1.substring(trimmed1.indexOf(":")+1));
+                	 endX = Integer.parseInt(trimmed2.substring(trimmed2.indexOf("TO")+2,trimmed2.indexOf(":")));
+                	 endY = Integer.parseInt(trimmed2.substring(trimmed2.indexOf(":")+1));
+                	 board.fields[endX][endY].accept(board.fields[begX][begY].getVisitor());
+                	 board.fields[begX][begY].accept(null);
+           	 	} else if (response.startsWith("INVALID_MOVE")) {
+           	 		targetField = null;
+           	 		selectedField = null;
+                } else if (response.startsWith("INVALID_SELECTION")) {
+                	selectedField = null;
+                } else if (response.startsWith("VICTORY")) {
+                		messageLabel.setText("Victory");
+                } else if (response.startsWith("DEFEAT")) {
+                		messageLabel.setText("Loser");
+                } else if (response.startsWith("PLAYER_LEFT")) {
+                	messageLabel.setText("Player: "+ response.substring(response.indexOf(":")+1) +"left");
+                }
+            }
+            output.println("QUIT");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            socket.close();
+            frame.dispose();
+        }
+    }
+
 	public static void main(String args[]) throws Exception{
 		TrilmaClient client = new TrilmaClient(args[0]);
         client.play();

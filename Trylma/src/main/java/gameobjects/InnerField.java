@@ -14,7 +14,7 @@ public class InnerField extends Field{
 	}
 
 	@Override
-	public boolean accept(Peg peg) {
-		return true;
+	public void accept(Peg peg) {
+		this.visitor=peg;
 	}
 }

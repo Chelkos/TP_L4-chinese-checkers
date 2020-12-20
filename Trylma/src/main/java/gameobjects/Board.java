@@ -17,19 +17,17 @@ import java.awt.geom.Ellipse2D.Float;
 public class Board extends JPanel{
 	
 	public Field fields[][];
-	public ArrayList<Field> Fields;
-	public ArrayList<Shape> David_Star;
-	public int height;
-    public Point p1,p2,p3,p4,p5,p6;
-    public int r;
-    public int tabx,taby;
-    public int NoPlayers;
+	private ArrayList<Shape> David_Star;
+	private int height;
+    private Point p1,p2,p3,p4,p5,p6;
+    private int r;
+    private int tabx,taby;
+    private int NoPlayers;
 	public Board(int NoPlayers){
 		this.NoPlayers=NoPlayers;
 		height = 800;
 		this.fields = new Field[20][20];
 		this.David_Star = new ArrayList<Shape>();
-		this.Fields = new ArrayList<Field>();
 		r = (int)(height *0.036);
         p1 = new Point((int)(height*0.1666666),(int)(height*0.294));
         p2 = new Point((int)(height/2),(int)(height*0.88444444));

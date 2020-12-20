@@ -18,6 +18,9 @@ public class Peg {
 	public Color getOwnerColor(){
 		return this.ownerColor;
 	}
+	public void setOwnerColor(Color newColor){
+		this.ownerColor=newColor;
+	}
 	public boolean inBase(){
 		return in_base; //TO BE DONE
 	}

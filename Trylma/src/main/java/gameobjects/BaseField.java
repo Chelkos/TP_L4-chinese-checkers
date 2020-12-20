@@ -18,8 +18,9 @@ public class BaseField extends Field {
 	}
 
 	@Override
-	public boolean accept(Peg peg) {
-		return false;
+	public void accept(Peg peg) {
+		this.visitor=peg;
+		
 	}
 	
 	public Color getOwnerColor() {
