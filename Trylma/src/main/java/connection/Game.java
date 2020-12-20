@@ -57,6 +57,7 @@ public class Game {
 				}
 			}
 		} else if(n==4) {
+			//
 			
 		} else if(n==6) {
 			
