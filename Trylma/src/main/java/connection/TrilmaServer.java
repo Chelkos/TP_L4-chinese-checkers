@@ -30,7 +30,7 @@ public class TrilmaServer {
 		}
 		try (ServerSocket listener = new ServerSocket(58901)) {
             System.out.println("Original Trilma Server is Running...");
-            ExecutorService pool = Executors.newFixedThreadPool(200); //
+            ExecutorService pool = Executors.newFixedThreadPool(200);
             while (true) {
                 Game game = new Game(n);
                 game.randomizePlayer(); 
