@@ -33,7 +33,7 @@ public class TrilmaServer {
             ExecutorService pool = Executors.newFixedThreadPool(200); //
             while (true) {
                 Game game = new Game(n);
-                game.randomizePlayer(); //
+                game.randomizePlayer(); 
                 for(int i=0; i<n; i++) {
                 	try {
                 	Game.Player player=game.addPlayer(listener.accept(), defaultPlayerName[i], defaultPlayerColor[i]);
