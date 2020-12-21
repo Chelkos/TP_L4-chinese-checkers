@@ -206,6 +206,7 @@ public class Board extends JPanel{
      for(int k=0; k<20;k++)
     	 for(int i=0;i<20;i++)
     	 {
+    		 
     		 if(fields[k][i]!=null)
     		 {
     			 if(fields[k][i].visitor!=null)
@@ -215,13 +216,17 @@ public class Board extends JPanel{
     			 }
     			 else
     			 {
+    			 g2.setColor(Color.white);
+    			 g2.fill(fields[k][i]);
     			 g2.setColor(Color.black);
+    			 g2.draw(fields[k][i]);
     			 }
     		
     			 g2.draw(fields[k][i]);
     			 g2.setColor(Color.black);
     		 
     		 }
+    		 
     	 }
     }
 

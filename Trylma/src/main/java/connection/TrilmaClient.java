@@ -28,34 +28,24 @@ public class TrilmaClient implements ITrilmaClient{
 	private Board board;
 	private Field selectedField=null; //Set these two fields to null after (in)valid move!
 	private Field targetField=null;
-	private JMenu menu;
-	private JMenuItem NextTurnButton;
-	private JMenuBar mb;
 	private Socket socket;
 	private Scanner input;
 	private PrintWriter output;
-	private JLabel colorName;
+	private Button endTurnButton;
 	public TrilmaClient(String NoPlayers) throws Exception{
 		frame = new JFrame();
-		
-		menu = new JMenu("Player options");
-		NextTurnButton = new JMenuItem("End Turn");
-		mb = new JMenuBar();
-	//	messageLabel = new JLabel("");
+		endTurnButton = new Button("End Turn");
+		messageLabel = new JLabel("");
 		socket=new Socket("127.0.0.1", 58901);
 		input=new Scanner(socket.getInputStream());
 		output=new PrintWriter(socket.getOutputStream(), true);
-	//	messageLabel.setBackground(Color.LIGHT_GRAY);
-		
-	//	frame.getContentPane().add(messageLabel, BorderLayout.SOUTH);
+		messageLabel.setBackground(Color.LIGHT_GRAY);
+		frame.add(endTurnButton,BorderLayout.EAST);
+		frame.getContentPane().add(messageLabel, BorderLayout.SOUTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 1000);
         frame.setVisible(true);
         frame.setResizable(false);
-        mb.add(menu);
-        frame.setJMenuBar(mb);
-        
-        menu.add(NextTurnButton);
         try
         {
 		board=new Board(Integer.parseInt(NoPlayers));
@@ -66,8 +56,8 @@ public class TrilmaClient implements ITrilmaClient{
         		return;
         		
         }
-        frame.add(board, BorderLayout.CENTER);
-		//board.setBackground(Color.WHITE);
+        frame.add(board);
+		board.setBackground(Color.WHITE);
 		board.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				int r=-1, p=-1;
@@ -103,15 +93,13 @@ public class TrilmaClient implements ITrilmaClient{
         try {
 
             String response =  input.nextLine();
-        //	colorName = new JLabel(response.substring(7));
-        //	frame.add(colorName, BorderLayout.NORTH);
             frame.setTitle(response.substring(7));
             String trimmed1,trimmed2;
            int begX,begY,endX,endY;
             while ( input.hasNextLine()) {
                 response =  input.nextLine();
                 if (response.startsWith("VALID_MOVE") ) {
-                	// messageLabel.setText("Valid move, please wait");
+                	 messageLabel.setText("Valid move, please wait");
                 	targetField.accept(selectedField.getVisitor());
                 	selectedField.accept(null);
                 	targetField = null;
@@ -143,7 +131,7 @@ public class TrilmaClient implements ITrilmaClient{
                 	messageLabel.setText("Player: "+ response.substring(response.indexOf(":")+1) +"left");
                 }
                 else if (response.startsWith("MESSAGE")) {
-         //       	messageLabel.setText(response.substring(8));
+                	messageLabel.setText(response.substring(8));
                 }
             }
             output.println("QUIT");
