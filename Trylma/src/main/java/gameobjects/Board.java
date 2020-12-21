@@ -84,7 +84,7 @@ public class Board extends JPanel{
 			for(int i=4;i<k+5;i++) {
 				fields[k][i] = new BaseField(p5.x,p5.y,r,Color.white);  			
 				if(NoPlayers== 2 || NoPlayers == 4|| NoPlayers == 6)
-					fields[k][i].visitor = new Peg(Color.blue);	
+					fields[k][i].accept(new Peg(Color.blue));	
 				p5.x += (height*0.045);
 			}
 			p5.y+=r*(height*0.0014375);
@@ -101,7 +101,7 @@ public class Board extends JPanel{
       		 {
       			fields[k][i] = new BaseField(p1.x,p1.y,r,Color.black);
       			if(NoPlayers== 3 || NoPlayers == 4|| NoPlayers == 6)
-					fields[k][i].visitor = new Peg(Color.yellow);	
+      			fields[k][i].accept(new Peg(Color.yellow));	
       			 p1.x += (height*0.045);
       		 }
       		 p1.y+=r*(height*0.0014375);
@@ -115,7 +115,7 @@ public class Board extends JPanel{
 			for(int i = 12; i>4+k;i--) {
 				fields[k][i] = new BaseField(p3.x,p3.y,r,Color.black);
 				if(NoPlayers== 3 ||  NoPlayers == 6)
-					fields[k][i].visitor = new Peg(Color.magenta);
+				fields[k][i].accept(new Peg(Color.magenta));	
      			 p3.x -= (height*0.045);
      			
 			}
@@ -130,7 +130,7 @@ public class Board extends JPanel{
 			for(int i=4;i<(k%8)+4;i++) {
 				fields[k][i] = new BaseField(p4.x,p4.y,r,Color.blue);  			
 				if( NoPlayers == 6)
-					fields[k][i].visitor = new Peg(Color.green);
+				fields[k][i].accept(new Peg(Color.green));	
 				p4.x += (height*0.045);
 			}
 			p4.y-=r*(height*0.0014375);
@@ -145,7 +145,7 @@ public class Board extends JPanel{
 			
 				fields[k][i] = new BaseField(p6.x,p6.y,r,Color.blue);  		
 				if(NoPlayers== 4 ||  NoPlayers == 6)
-					fields[k][i].visitor = new Peg(Color.cyan);
+				fields[k][i].accept(new Peg(Color.cyan));	
 				p6.x-= (height*0.045);
 			}
 			p6.y+=r*(height*0.0014375);
@@ -158,7 +158,7 @@ public class Board extends JPanel{
 		for(int k = 16;k>=13;k--) {
 			for(int i=12;i>8+k-13;i--) {
 				fields[k][i] = new BaseField(p2.x,p2.y,r,Color.blue);  			
-				fields[k][i].visitor = new Peg(Color.red);
+				fields[k][i].accept(new Peg(Color.red));	
 				p2.x-= (height*0.045);
 			}
 			p2.y-=r*(height*0.0014375);
@@ -196,6 +196,10 @@ public class Board extends JPanel{
 	}
 	public void paint(Graphics g){
    	 Graphics2D g2 = (Graphics2D) g;
+   	 g2.setPaint(Color.white);
+   	 g2.drawRect(1200, 1200, 1200, 1200);
+   	 g2.fillRect(1200, 1200, 1200, 1200);
+   	 g2.setPaint(Color.black);
    	 g2.setStroke(new BasicStroke(5));
      g2.draw(this.David_Star.get(0));
      g2.draw(this.David_Star.get(1));

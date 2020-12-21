@@ -10,6 +10,7 @@ public class BaseField extends Field {
 	private Color ownerColor;
 	
 	public BaseField(int x, int y, int r, Color ownerColor){
+		this.visitor=null;
 		this.ownerColor=ownerColor;
 		this.x=x;
 		this.y=y;
@@ -19,6 +20,7 @@ public class BaseField extends Field {
 
 	@Override
 	public void accept(Peg peg) {
+		
 		this.visitor=peg;
 		
 	}

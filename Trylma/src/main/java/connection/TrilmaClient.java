@@ -37,22 +37,21 @@ public class TrilmaClient implements ITrilmaClient{
 	private JLabel colorName;
 	public TrilmaClient(String NoPlayers) throws Exception{
 		frame = new JFrame();
-		colorName = new JLabel("Czerwony");
+		
 		menu = new JMenu("Player options");
 		NextTurnButton = new JMenuItem("End Turn");
 		mb = new JMenuBar();
-		messageLabel = new JLabel("ELOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+	//	messageLabel = new JLabel("");
 		socket=new Socket("127.0.0.1", 58901);
 		input=new Scanner(socket.getInputStream());
 		output=new PrintWriter(socket.getOutputStream(), true);
-		messageLabel.setBackground(Color.LIGHT_GRAY);
-		frame.add(colorName, BorderLayout.NORTH);
-		frame.getContentPane().add(messageLabel, BorderLayout.SOUTH);
+	//	messageLabel.setBackground(Color.LIGHT_GRAY);
+		
+	//	frame.getContentPane().add(messageLabel, BorderLayout.SOUTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 800);
+        frame.setSize(1000, 1000);
         frame.setVisible(true);
         frame.setResizable(false);
-        frame.setTitle("Czerwony");
         mb.add(menu);
         frame.setJMenuBar(mb);
         
@@ -89,7 +88,7 @@ public class TrilmaClient implements ITrilmaClient{
 				if(clickedField==null)
 					return;
 				if(selectedField==null) {
-					selectedField=clickedField; 			//validate selection by request here and if (INVALID SELECTION ?)
+					selectedField=clickedField; //validate selection by request here and if (INVALID SELECTION ?)
 					output.println("SELECT "+ r + "|" + p);	//answer in play(), reset to null
 				}
 				else {
@@ -102,17 +101,23 @@ public class TrilmaClient implements ITrilmaClient{
 	
     public void play() throws Exception {
         try {
+
             String response =  input.nextLine();
+        //	colorName = new JLabel(response.substring(7));
+        //	frame.add(colorName, BorderLayout.NORTH);
+            frame.setTitle(response.substring(7));
             String trimmed1,trimmed2;
            int begX,begY,endX,endY;
             while ( input.hasNextLine()) {
                 response =  input.nextLine();
                 if (response.startsWith("VALID_MOVE") ) {
-                	 messageLabel.setText("Valid move, please wait");
+                	// messageLabel.setText("Valid move, please wait");
                 	targetField.accept(selectedField.getVisitor());
                 	selectedField.accept(null);
                 	targetField = null;
                 	selectedField = null;
+
+                	board.repaint();
                 }else if(response.startsWith("MOVE")) {
                 	 trimmed1 = response.substring(response.indexOf("|"),response.indexOf("TO"));
                 	 trimmed2 = response.substring(response.indexOf("TO"));
@@ -120,8 +125,11 @@ public class TrilmaClient implements ITrilmaClient{
                 	 begY = Integer.parseInt(trimmed1.substring(trimmed1.indexOf(":")+1));
                 	 endX = Integer.parseInt(trimmed2.substring(trimmed2.indexOf("TO")+2,trimmed2.indexOf(":")));
                 	 endY = Integer.parseInt(trimmed2.substring(trimmed2.indexOf(":")+1));
-                	 board.fields[endX][endY].accept(board.fields[begX][begY].getVisitor());
-                	 board.fields[begX][begY].accept(null);
+                	board.fields[endY][endX].accept(board.fields[begY][begX].getVisitor());
+                	board.fields[begY][begX].accept(null);
+                	 board.repaint();
+                	 targetField = null;
+                 	selectedField = null;
            	 	} else if (response.startsWith("INVALID_MOVE")) {
            	 		targetField = null;
            	 		selectedField = null;
@@ -133,6 +141,9 @@ public class TrilmaClient implements ITrilmaClient{
                 		messageLabel.setText("Loser");
                 } else if (response.startsWith("PLAYER_LEFT")) {
                 	messageLabel.setText("Player: "+ response.substring(response.indexOf(":")+1) +"left");
+                }
+                else if (response.startsWith("MESSAGE")) {
+         //       	messageLabel.setText(response.substring(8));
                 }
             }
             output.println("QUIT");
