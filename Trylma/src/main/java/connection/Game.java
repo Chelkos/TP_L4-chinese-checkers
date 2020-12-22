@@ -18,7 +18,7 @@ public class Game {
 	private Player[] players; //players in game
 	private Player currentPlayer;
 	private int currentPlayerIndex;
-	private int[] selection=new int[2]; //auxiliary variable for selection of field
+
 	
 	public Game(int numberOfPlayers) {
 		this.players=new Player[numberOfPlayers];
@@ -35,10 +35,10 @@ public class Game {
 		if(n==2) {
 			for(int i=0; i<=3; i++) {
 				for(int j=0; j<=i; j++) {
-					board[7-i][3-j]=new Peg(players[0].color); //set top triangle pegs for one player
-					baseField[7-i][3-j]=players[1]; //set top triangle as target for the other player
-					board[9+i][13+j]=new Peg(players[1].color); //do reverse for bottom triangle
-					baseField[9+i][13+j]=players[0];
+					board[7-i][3-j]=new Peg(players[1].color); //set top triangle pegs for one player
+					baseField[7-i][3-j]=players[0]; //set top triangle as target for the other player
+					board[9+i][13+j]=new Peg(players[0].color); //do reverse for bottom triangle
+					baseField[9+i][13+j]=players[1];
 				}
 			}
 		} else if(n==3) {
@@ -57,32 +57,24 @@ public class Game {
 				}
 			}
 		} else if(n==4) {
-			//
+			
 			
 		} else if(n==6) {
 			
 		}
 	}
 	
-	public synchronized Player addPlayer(Socket socket, String name, Color color) throws CreatingPlayerException{
-		for(Player p : players)
-			if(p.color.equals(color))
-				throw new CreatingPlayerException("Player already exists!");
+	public void addPlayer(Player player) {
 		int i=0;
 		while(players[i]!=null) { i++; }
-		if(i<players.length) {
-			Player player=new Player(socket, name, color);
+		if(i<players.length)
 			players[i]=player;
-			return player;
-		}
-		else
-			throw new CreatingPlayerException("Too many players!");
 	}
 	
 	public boolean hasWinner() {
-		for(int i=0; i<board.length; i++)
+		for(int i=0; i<board.length; i++)//Should be checking only player-colored ones
 			for(int j=0; j<board[i].length; j++)
-				if(!board[i][j].inBase())
+				if( board[i][j]!=null && !board[i][j].inBase() )
 					return false;
 		return true;
 	}
@@ -94,7 +86,6 @@ public class Game {
 			throw new InvalidSelectException("This is empty field!");
 		else if(board[i][j].getOwnerColor()!=currentPlayer.color)
 			throw new InvalidSelectException("This is not your peg!");
-		selection[0]=i; selection[1]=j;
 	}
 	
 	public synchronized void move(int begI, int begJ, int endI, int endJ, Player player) throws IllegalMoveException{
@@ -115,10 +106,10 @@ public class Game {
 			throw new Exception("Not your turn!");
 		currentPlayerIndex=(currentPlayerIndex+1)%(players.length);
 		currentPlayer=players[currentPlayerIndex];
-		selection[0]=-1; selection[1]=-1;
 	}
 	
 	class Player implements Runnable {
+		private int[] selection=new int[2]; //auxiliary variable for selection of field
 		public String name;
 		public Color color;
 		public Socket socket;
@@ -129,6 +120,7 @@ public class Game {
 			this.socket=socket;
 			this.name=name;
 			this.color=color;
+			addPlayer(this);
 		}
 		
 		@Override
@@ -155,7 +147,9 @@ public class Game {
 			input=new Scanner(socket.getInputStream());
 			output=new PrintWriter(socket.getOutputStream(), true);
 			output.println("WELCOME " + name);
+			
 			if(this==players[players.length-1]) {
+
 				currentPlayer=players[currentPlayerIndex];
 				currentPlayer.output.println("MESSAGE Your move");
 			} else {
@@ -170,14 +164,13 @@ public class Game {
 	            if (command.startsWith("QUIT")) {
 	                return;
 	            } else if (command.startsWith("SELECT")) {
-	            	int i, j;
-	             	i=Integer.parseInt(command.substring(7,command.indexOf('|')));
-	               	j=Integer.parseInt(command.substring(command.indexOf('|')));
-	                processSelectCommand(i, j);
+	            	selection[0]=Integer.parseInt(command.substring(7,command.indexOf('|')));
+	            	selection[1]=Integer.parseInt(command.substring(command.indexOf('|')+1));
+	                processSelectCommand(selection[0], selection[1]);
 	            } else if (command.startsWith("MOVE")) {
 	                int endI, endJ;
 	               	endI=Integer.parseInt(command.substring(5,command.indexOf('|')));
-	               	endJ=Integer.parseInt(command.substring(command.indexOf('|')));
+	               	endJ=Integer.parseInt(command.substring(command.indexOf('|')+1));
 	                processMoveCommand(selection[0], selection[1], endI, endJ);
 	            } else if (command.startsWith("END_TURN")) {
 	            	processEndTurnCommand();
@@ -200,7 +193,7 @@ public class Game {
 				output.println("VALID_MOVE");
 				for(Player p : players)
 					if(!p.equals(this))
-						p.output.println("MOVE " + this.name + ":" + begI + "|" + begJ + " TO " + endI + "|" + endJ);
+						p.output.println("MOVE " + this.name + "|" + begI + ":" + begJ + "TO" + endI + ":" + endJ);
 				if(hasWinner()) {
 					output.println("VICTORY");
 					for(Player p : players)
