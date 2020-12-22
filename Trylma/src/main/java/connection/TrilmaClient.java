@@ -121,8 +121,10 @@ public class TrilmaClient implements ITrilmaClient{
            	 	} else if (response.startsWith("INVALID_MOVE")) {
            	 		targetField = null;
            	 		selectedField = null;
+           	 		messageLabel.setText(response.substring(13));
                 } else if (response.startsWith("INVALID_SELECTION")) {
                 	selectedField = null;
+                	messageLabel.setText(response.substring(18));
                 } else if (response.startsWith("VICTORY")) {
                 		messageLabel.setText("Victory");
                 } else if (response.startsWith("DEFEAT")) {

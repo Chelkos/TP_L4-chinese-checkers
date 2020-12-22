@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.util.Random;
 import java.util.Scanner;
 
-import exceptions.CreatingPlayerException;
 import exceptions.IllegalMoveException;
 import exceptions.InvalidSelectException;
 import gameobjects.Peg;
@@ -83,7 +82,7 @@ public class Game {
 		if(player!=currentPlayer)
 			throw new InvalidSelectException("Not your turn!");
 		else if(board[i][j]==null)
-			throw new InvalidSelectException("This is empty field!");
+			throw new InvalidSelectException("This field is empty!");
 		else if(board[i][j].getOwnerColor()!=currentPlayer.color)
 			throw new InvalidSelectException("This is not your peg!");
 	}
@@ -183,7 +182,7 @@ public class Game {
 				select(i, j, this);
 				output.println("VALID_SELECTION");
 			} catch(InvalidSelectException e) {
-				output.println("INVALID_SELECTION" + e.getMessage());
+				output.println("INVALID_SELECTION " + e.getMessage());
 			}
 		}
 		
@@ -201,7 +200,7 @@ public class Game {
 							p.output.println("DEFEAT: " + this.name + " won");
 				}
 			} catch(IllegalMoveException e) {
-				output.println("INVALID_MOVE" + e.getMessage());
+				output.println("INVALID_MOVE " + e.getMessage());
 			}
 		}
 		
@@ -210,7 +209,7 @@ public class Game {
 				endTurn(this);
 				output.println("MESSAGE End of turn");
 			} catch(Exception e) {
-				output.println(e.getMessage());
+				output.println("MESSAGE " + e.getMessage());
 			}
 		}
 	}
