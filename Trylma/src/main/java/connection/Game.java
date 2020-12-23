@@ -31,34 +31,55 @@ public class Game {
 	public void setup() {
 		int n=players.length;
 		if(n==2) {
-			for(int i=0; i<=3; i++) {
-				for(int j=0; j<=i; j++) {
-					board[7-i][3-j]=new Peg(players[1].color); //set top triangle pegs for one player
-					baseField[7-i][3-j]=players[0]; //set top triangle as target for the other player
-					board[9+i][13+j]=new Peg(players[0].color); //do reverse for bottom triangle
-					baseField[9+i][13+j]=players[1];
+			for(int i=0; i<=3; i++) { //TODO: revert players, wrong order for test purposes 
+				for(int j=0; j<=i; j++) { 
+					board[9+i][13+j]=new Peg(players[0].color); //put first player's pegs in bottom triangle
+					board[7-i][3-j]=new Peg(players[1].color); //put second player's pegs in top triangle
+					baseField[7-i][3-j]=players[0]; //set top triangle as second player's target "base" 
+					baseField[9+i][13+j]=players[1]; //set bottom triangle as first player's target "base"
 				}
 			}
 		} else if(n==3) {
-			for(int i=0; i<=3; i++) { //setup for first player
+			for(int i=0; i<=3; i++) { //setup for second and third player, middle triangles
 				for(int j=0; j<=i; j++) {
-					board[9+i][13+j]=new Peg(players[0].color); 
-					baseField[7-i][3-j]=players[0]; 
-				}
-			}
-			for(int i=0; i<=3; i++) { //setup for second and third player
-				for(int j=0; j<=i; j++) {
-					board[i][4+j]=new Peg(players[1].color); 
-					board[9+i][4+j]=new Peg(players[2].color); 
-					baseField[7-i][12-j]=players[2];
-					baseField[16-i][12-j]=players[1];
+					board[9+i][4+j]=new Peg(players[0].color); //put pegs
+					board[9+i][13+j]=new Peg(players[1].color); 
+					board[i][4+j]=new Peg(players[2].color); 
+					baseField[7-i][12-j]=players[0]; //set bases
+					baseField[7-i][3-j]=players[1]; 
+					baseField[16-i][12-j]=players[2];
 				}
 			}
 		} else if(n==4) {
-			
-			
+			for(int i=0; i<=3; i++) { //setup triangles on sides for all players
+				for(int j=0; j<=i; j++) {
+					board[9+i][4+j]=new Peg(players[0].color); 
+					board[7-i][12-j]=new Peg(players[1].color);
+					board[16-i][12-j]=new Peg(players[2].color);
+					board[i][4+j]=new Peg(players[3].color);
+					baseField[9+i][4+j]=players[2]; 
+					baseField[7-i][12-j]=players[3];
+					baseField[16-i][12-j]=players[0];
+					baseField[i][4+j]=players[1];
+				}
+			}
 		} else if(n==6) {
-			
+			for(int i=0; i<=3; i++) { //setup all triangles 
+				for(int j=0; j<=i; j++) {
+					board[7-i][3-j]=new Peg(players[0].color);
+					board[9+i][4+j]=new Peg(players[1].color); 
+					board[16-i][12-j]=new Peg(players[2].color);
+					board[9+i][13+j]=new Peg(players[3].color);
+					board[7-i][12-j]=new Peg(players[4].color);
+					board[i][4+j]=new Peg(players[5].color);
+					baseField[9+i][13+j]=players[0];
+					baseField[16-i][12-j]=players[1];
+					baseField[i][4+j]=players[2];
+					baseField[7-i][3-j]=players[3];  
+					baseField[9+i][4+j]=players[4]; 
+					baseField[7-i][12-j]=players[5];
+				}
+			}
 		}
 	}
 	
@@ -70,9 +91,9 @@ public class Game {
 	}
 	
 	public boolean hasWinner() {
-		for(int i=0; i<board.length; i++)//Should be checking only player-colored ones
+		for(int i=0; i<board.length; i++)
 			for(int j=0; j<board[i].length; j++)
-				if( board[i][j]!=null && !board[i][j].inBase() )
+				if(board[i][j]!=null && board[i][j].getOwnerColor()==currentPlayer.color && baseField[i][j]!=currentPlayer)
 					return false;
 		return true;
 	}
@@ -106,7 +127,7 @@ public class Game {
 			throw new IllegalMoveException("Not your turn!");
 		else if(board[endI][endJ]!=null)
 			throw new IllegalMoveException("This field is occupied!");
-		else if(board[begI][begJ].inBase() && baseField[endI][endJ]==null)
+		else if(baseField[begI][begJ]==currentPlayer && baseField[endI][endJ]!=currentPlayer)
 			throw new IllegalMoveException("You can't move out of base!");
 		else if(player.movedPeg!=null && board[begI][begJ]!=player.movedPeg)
 			throw new IllegalMoveException("You can move only one peg in turn!");
@@ -166,7 +187,7 @@ public class Game {
 			input=new Scanner(socket.getInputStream());
 			output=new PrintWriter(socket.getOutputStream(), true);
 			output.println("WELCOME " + name);
-			
+			//output.println("PLAYERS: " + Integer.toString(players.length)); send colors?
 			if(this==players[players.length-1]) {
 
 				currentPlayer=players[currentPlayerIndex];
