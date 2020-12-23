@@ -17,7 +17,6 @@ public class Game {
 	private Player[] players; //players in game
 	private Player currentPlayer;
 	private int currentPlayerIndex;
-
 	
 	public Game(int numberOfPlayers) {
 		this.players=new Player[numberOfPlayers];
@@ -78,22 +77,17 @@ public class Game {
 		return true;
 	}
 	
-	public synchronized void select(int i, int j, Player player) throws InvalidSelectException{
+	public synchronized void select(int begI, int begJ, Player player) throws InvalidSelectException{
 		if(player!=currentPlayer)
 			throw new InvalidSelectException("Not your turn!");
-		else if(board[i][j]==null)
+		else if(board[begI][begJ]==null)
 			throw new InvalidSelectException("This field is empty!");
-		else if(board[i][j].getOwnerColor()!=currentPlayer.color)
+		else if(board[begI][begJ].getOwnerColor()!=currentPlayer.color)
 			throw new InvalidSelectException("This is not your peg!");
 	}
 	
 	public synchronized void move(int begI, int begJ, int endI, int endJ, Player player) throws IllegalMoveException{
-		if(player!=currentPlayer)
-			throw new IllegalMoveException("Not your turn!");
-		else if(board[endI][endJ]!=null)
-			throw new IllegalMoveException("This field is occupied!");
-		else if(board[begI][begJ].inBase() && baseField[endI][endJ]==null)
-			throw new IllegalMoveException("You can't move out of base!");
+		verifyMove(begI, begJ, endI, endJ, player);
 		board[endI][endJ]=board[begI][begJ]; board[begI][begJ]=null;
 		if(baseField[endI][endJ]==currentPlayer)
 			//board[endI][endJ].enterBase()
@@ -107,10 +101,36 @@ public class Game {
 		currentPlayer=players[currentPlayerIndex];
 	}
 	
+	private void verifyMove(int begI, int begJ, int endI, int endJ, Player player) throws IllegalMoveException {
+		if(player!=currentPlayer)
+			throw new IllegalMoveException("Not your turn!");
+		else if(board[endI][endJ]!=null)
+			throw new IllegalMoveException("This field is occupied!");
+		else if(board[begI][begJ].inBase() && baseField[endI][endJ]==null)
+			throw new IllegalMoveException("You can't move out of base!");
+		else if(player.movedPeg!=null && board[begI][begJ]!=player.movedPeg)
+			throw new IllegalMoveException("You can move only one peg in turn!");
+		int distance=Math.max(Math.abs(endI-begI), Math.abs(endJ-begJ)); //distance in maximum metric
+		if(distance==1 && !player.jumpedOverPeg) { //jump to adjacent field, can be done only once and can't be combined with jump over peg
+			player.canMove=false; //processCommands() will call for end of turn automatically
+		} else if(distance==2 && Math.abs(endI-begI)!=1 && Math.abs(endJ-begJ)!=1) { //jump in a straight line over peg
+			player.jumpedOverPeg=true;
+			int medI=(begI+endI)/2, medJ=(begJ+endJ)/2; //coordinates of field between beg and end
+			if(board[medI][medJ]==null) //checks if there is a peg to jump over
+				throw new IllegalMoveException("This move is not allowed!");
+		} else {
+			throw new IllegalMoveException("This move is not allowed!");
+		}
+		player.movedPeg=board[begI][begJ]; //finally indicates which peg was successfully moved
+	}
+	
 	class Player implements Runnable {
 		private int[] selection=new int[2]; //auxiliary variable for selection of field
 		public String name;
 		public Color color;
+		public boolean canMove=true;
+		public boolean jumpedOverPeg=false;
+		public Peg movedPeg=null;
 		public Socket socket;
 		public Scanner input;
 		public PrintWriter output;
@@ -171,15 +191,17 @@ public class Game {
 	               	endI=Integer.parseInt(command.substring(5,command.indexOf('|')));
 	               	endJ=Integer.parseInt(command.substring(command.indexOf('|')+1));
 	                processMoveCommand(selection[0], selection[1], endI, endJ);
+	                if(!canMove)
+	                	processEndTurnCommand();
 	            } else if (command.startsWith("END_TURN")) {
 	            	processEndTurnCommand();
 	            }
 	        }
 		}
 		
-		private void processSelectCommand(int i, int j) {
+		private void processSelectCommand(int begI, int begJ) {
 			try {
-				select(i, j, this);
+				select(begI, begJ, this);
 				output.println("VALID_SELECTION");
 			} catch(InvalidSelectException e) {
 				output.println("INVALID_SELECTION " + e.getMessage());
@@ -207,7 +229,11 @@ public class Game {
 		private void processEndTurnCommand() {
 			try {
 				endTurn(this);
+				canMove=true;
+				jumpedOverPeg=false;
+				movedPeg=null;
 				output.println("MESSAGE End of turn");
+				currentPlayer.output.println("MESSAGE Your move");
 			} catch(Exception e) {
 				output.println("MESSAGE " + e.getMessage());
 			}
