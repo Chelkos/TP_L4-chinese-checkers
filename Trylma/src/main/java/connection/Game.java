@@ -84,10 +84,11 @@ public class Game {
 	}
 	
 	public void addPlayer(Player player) {
-		int i=0;
-		while(players[i]!=null) { i++; }
-		if(i<players.length)
-			players[i]=player;
+		for(int i=0; i<players.length; i++)
+			if(players[i]==null) {
+				players[i]=player;
+				return;
+			}
 	}
 	
 	public boolean hasWinner() {
