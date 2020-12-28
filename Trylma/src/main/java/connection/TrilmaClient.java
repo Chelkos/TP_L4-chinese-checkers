@@ -103,9 +103,9 @@ public class TrilmaClient implements ITrilmaClient{
             frame.setTitle(response.substring(7));
             response = input.nextLine();
             noPlayers = Integer.parseInt(response.substring(9));
-            
+            System.out.println(noPlayers);
             board.fillBoard(noPlayers);
-            
+          
             String trimmed1,trimmed2;
            int begX,begY,endX,endY;
            

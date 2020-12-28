@@ -74,9 +74,9 @@ public class Board extends JPanel{
 		} else if(n==3) {
 			for(int i=0; i<=3; i++) {
 				for(int j=0; j<=i; j++) {
-					fields[9+i][4+j].accept(new Peg(Color.red)); 
-					fields[9+i][13+j].accept(new Peg(Color.blue)); 
-					fields[i][4+j].accept(new Peg(Color.green)); 
+					fields[9+i][4+j].accept(new Peg(Color.blue)); 
+					fields[13+j][9+i].accept(new Peg(Color.red)); 
+					fields[4+j][i].accept(new Peg(Color.green)); 
 				}
 			}
 		} else if(n==4) {
@@ -112,18 +112,21 @@ public class Board extends JPanel{
 		int tWidth=92;
 		p6.y-=r*4.5;
 		p6.x-=3.5*r;
+		Point p = new Point();
+		p.x=p6.x;
+		p.y=p6.y;
 		p5.y+=r*1.3;
 		p5.x-=0.5*r;
 		p2.y-=2.4*r;
 		p2.x-=0.5*r;
 		p1.y+=tHeight-(int)(2*r);
 		p1.x+=tWidth-(int)(0.8*r);
-		
-		p3.y+=tHeight-(int)(2*r);
-		p3.x-=tWidth+(int)(0.2*r);
+		p3.x=p.x;
+		p3.y=p.y;
+		p3.y-=tHeight-(int)(r*3.4);
+		//p3.x-=tWidth+(int)(0.2*r);
 		p4.x=p1.x;
 		p4.y=p1.y+(int)(2.2*r);
-		
 		for(int k = 0;k<4;k++) {
 			for(int i=4;i<k+5;i++) {
 				fields[k][i] = new BaseField(p5.x,p5.y,r,Color.black);  			
@@ -139,14 +142,14 @@ public class Board extends JPanel{
 				fields[7-k][i+8-k] = new BaseField(p6.x,p6.y,r,Color.black);  		
 				p6.x-= (height*0.045);
 			}
-			p6.y+=r*(height*0.0014375);
-			p6.x+=height*0.045*(k+1.5);
+			p3.y-=r*(height*0.0014375);
+			p3.x-=height*0.045*(k+1.5);
 			p5.y+=r*(height*0.0014375);
 			p5.x-=(height*0.045)*(k+1.5);
 			p4.y+=r*(height*0.0014375);
 			p4.x-=height*0.045*(k+1.5);
-			p3.y-=r*(height*0.0014375);
-      		p3.x-= (height*0.045)*(k+1.5);
+			p6.y+=r*(height*0.0014375);
+      		p6.x+= (height*0.045)*(k+1.5);
 			p2.y-=r*(height*0.0014375);
 			p2.x+=(height*0.045)*(k+1.5);
      		p1.y-=r*(height*0.0014375);
