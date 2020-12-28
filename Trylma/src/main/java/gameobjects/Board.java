@@ -19,7 +19,7 @@ public class Board extends JPanel{
 	public Field fields[][];
 	private ArrayList<Shape> David_Star;
 	private int height;
-    private Point p1,p2,p3,p4,p5,p6; //
+    private Point p1,p2,p3,p4,p5,p6;
     private int r;
 	public Board(){
 		height = 800;
@@ -32,7 +32,6 @@ public class Board extends JPanel{
         p4 = new Point((int)(height*0.1666666),(int)(height*0.6622222));
         p5 = new Point((int)(height/2),(int)(height*0.085555555));
         p6 = new Point((int)(height*0.83333333),(int)(height*0.6622222));
-        System.out.println(p3.x-p1.x);
         for(int k = 0;k<20;k++)
       	  for(int i = 0 ;i<20;i++)
       		fields[k][i]=null;
@@ -89,7 +88,7 @@ public class Board extends JPanel{
 				}
 			}
 		} else if(n==6) {
-			for(int i=0; i<=3; i++) { //setup all triangles 
+			for(int i=0; i<=3; i++) { 
 				for(int j=0; j<=i; j++) {
 					fields[7-i][3-j].accept(new Peg(Color.red)); 
 					fields[9+i][4+j].accept(new Peg(Color.blue));

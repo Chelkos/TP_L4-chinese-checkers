@@ -171,7 +171,7 @@ public class Game {
 			} finally {
 				for(Player p : players)
 					if(p!=null && p.output!=null) {
-						output.println("PLAYER_LEFT: " + p.name);
+						p.output.println("PLAYER_LEFT: " + this.name);
 						break;
 					}
 				try {
