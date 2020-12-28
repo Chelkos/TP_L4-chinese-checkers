@@ -40,7 +40,7 @@ public class Game {
 				}
 			}
 		} else if(n==3) {
-			for(int i=0; i<=3; i++) { //setup for second and third player, middle triangles
+			for(int i=0; i<=3; i++) { //setup top-left, top-right and bottom triangles
 				for(int j=0; j<=i; j++) {
 					board[9+i][4+j]=new Peg(players[0].color); //put pegs
 					board[9+i][13+j]=new Peg(players[1].color); 
@@ -54,13 +54,13 @@ public class Game {
 			for(int i=0; i<=3; i++) { //setup triangles on sides for all players
 				for(int j=0; j<=i; j++) {
 					board[9+i][4+j]=new Peg(players[0].color); 
-					board[7-i][12-j]=new Peg(players[1].color);
-					board[16-i][12-j]=new Peg(players[2].color);
+					board[16-i][12-j]=new Peg(players[1].color);
+					board[7-i][12-j]=new Peg(players[2].color);
 					board[i][4+j]=new Peg(players[3].color);
-					baseField[9+i][4+j]=players[2]; 
-					baseField[7-i][12-j]=players[3];
-					baseField[16-i][12-j]=players[0];
+					baseField[7-i][12-j]=players[0];
 					baseField[i][4+j]=players[1];
+					baseField[9+i][4+j]=players[2]; 
+					baseField[16-i][12-j]=players[3];
 				}
 			}
 		} else if(n==6) {
@@ -73,11 +73,11 @@ public class Game {
 					board[7-i][12-j]=new Peg(players[4].color);
 					board[i][4+j]=new Peg(players[5].color);
 					baseField[9+i][13+j]=players[0];
-					baseField[16-i][12-j]=players[1];
+					baseField[7-i][12-j]=players[1];
 					baseField[i][4+j]=players[2];
 					baseField[7-i][3-j]=players[3];  
 					baseField[9+i][4+j]=players[4]; 
-					baseField[7-i][12-j]=players[5];
+					baseField[16-i][12-j]=players[5];
 				}
 			}
 		}
