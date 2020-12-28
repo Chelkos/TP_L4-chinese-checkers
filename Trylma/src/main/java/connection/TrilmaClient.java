@@ -64,7 +64,7 @@ public class TrilmaClient implements ITrilmaClient{
         		
         }
         frame.add(board);
-		board.setBackground(Color.WHITE);
+		board.setBackground(Color.WHITE);//
 		board.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				int r=-1, p=-1;

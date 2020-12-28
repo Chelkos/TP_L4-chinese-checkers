@@ -19,7 +19,7 @@ public class Board extends JPanel{
 	public Field fields[][];
 	private ArrayList<Shape> David_Star;
 	private int height;
-    private Point p1,p2,p3,p4,p5,p6;
+    private Point p1,p2,p3,p4,p5,p6; //
     private int r;
 	public Board(){
 		height = 800;
