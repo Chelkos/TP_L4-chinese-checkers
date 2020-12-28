@@ -31,12 +31,12 @@ public class Game {
 	public void setup() {
 		int n=players.length;
 		if(n==2) {
-			for(int i=0; i<=3; i++) { //TODO: revert players, wrong order for test purposes 
+			for(int i=0; i<=3; i++) {
 				for(int j=0; j<=i; j++) { 
-					board[9+i][13+j]=new Peg(players[0].color); //put first player's pegs in bottom triangle
-					board[7-i][3-j]=new Peg(players[1].color); //put second player's pegs in top triangle
-					baseField[7-i][3-j]=players[0]; //set top triangle as second player's target "base" 
-					baseField[9+i][13+j]=players[1]; //set bottom triangle as first player's target "base"
+					board[7-i][3-j]=new Peg(players[0].color);//put first player's pegs in top triangle
+					board[9+i][13+j]=new Peg(players[1].color);//put second player's pegs in bottom triangle
+					baseField[9+i][13+j]=players[0]; //set bottom triangle as first player's target "base"  
+					baseField[7-i][3-j]=players[1]; //set top triangle as second player's target "base"
 				}
 			}
 		} else if(n==3) {
@@ -111,9 +111,6 @@ public class Game {
 	public synchronized void move(int begI, int begJ, int endI, int endJ, Player player) throws IllegalMoveException{
 		verifyMove(begI, begJ, endI, endJ, player);
 		board[endI][endJ]=board[begI][begJ]; board[begI][begJ]=null;
-		if(baseField[endI][endJ]==currentPlayer)
-			//board[endI][endJ].enterBase()
-			;
 	}
 	
 	public synchronized void endTurn(Player player) throws Exception{
@@ -188,9 +185,8 @@ public class Game {
 			input=new Scanner(socket.getInputStream());
 			output=new PrintWriter(socket.getOutputStream(), true);
 			output.println("WELCOME " + name);
-			//output.println("PLAYERS: " + Integer.toString(players.length)); send colors?
+			output.println("PLAYERS: " + Integer.toString(players.length));
 			if(this==players[players.length-1]) {
-
 				currentPlayer=players[currentPlayerIndex];
 				currentPlayer.output.println("MESSAGE Your move");
 			} else {
