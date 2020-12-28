@@ -32,7 +32,7 @@ public class TrilmaClient implements ITrilmaClient{
 	private Scanner input;
 	private PrintWriter output;
 	private Button endTurnButton;
-	public TrilmaClient(String NoPlayers) throws Exception{
+	public TrilmaClient() throws Exception{
 		frame = new JFrame();
 		endTurnButton = new Button("End Turn");
 		messageLabel = new JLabel("");
@@ -46,9 +46,16 @@ public class TrilmaClient implements ITrilmaClient{
         frame.setSize(1000, 1000);
         frame.setVisible(true);
         frame.setResizable(false);
+        endTurnButton.addMouseListener(new MouseAdapter() {
+        	public void mousePressed(MouseEvent e) {
+        		output.println("END_TURN");
+        	}
+        	
+        	
+        });
         try
         {
-		board=new Board(Integer.parseInt(NoPlayers));
+		board=new Board();
         }
         catch(NumberFormatException e)
         {
@@ -91,11 +98,17 @@ public class TrilmaClient implements ITrilmaClient{
 	
     public void play() throws Exception {
         try {
-
+        	int noPlayers;
             String response =  input.nextLine();
             frame.setTitle(response.substring(7));
+            response = input.nextLine();
+            noPlayers = Integer.parseInt(response.substring(9));
+            
+            board.fillBoard(noPlayers);
+            
             String trimmed1,trimmed2;
            int begX,begY,endX,endY;
+           
             while ( input.hasNextLine()) {
                 response =  input.nextLine();
                 if (response.startsWith("VALID_MOVE") ) {
@@ -146,7 +159,7 @@ public class TrilmaClient implements ITrilmaClient{
     }
 
 	public static void main(String args[]) throws Exception{
-		TrilmaClient client = new TrilmaClient(args[0]);
+		TrilmaClient client = new TrilmaClient();
         client.play();
 	}
 }

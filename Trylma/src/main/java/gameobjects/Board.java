@@ -21,10 +21,7 @@ public class Board extends JPanel{
 	private int height;
     private Point p1,p2,p3,p4,p5,p6;
     private int r;
-    private int tabx,taby;
-    private int NoPlayers;
-	public Board(int NoPlayers){
-		this.NoPlayers=NoPlayers;
+	public Board(){
 		height = 800;
 		this.fields = new Field[20][20];
 		this.David_Star = new ArrayList<Shape>();
@@ -35,12 +32,13 @@ public class Board extends JPanel{
         p4 = new Point((int)(height*0.1666666),(int)(height*0.6622222));
         p5 = new Point((int)(height/2),(int)(height*0.085555555));
         p6 = new Point((int)(height*0.83333333),(int)(height*0.6622222));
+        System.out.println(p3.x-p1.x);
         for(int k = 0;k<20;k++)
       	  for(int i = 0 ;i<20;i++)
       		fields[k][i]=null;
         drawBoardBorders(height);
         
-       drawFieldsBases();
+       drawFields();
        drawInnerField1();
        drawInnerField2();
         setSize(height,height);
@@ -63,112 +61,102 @@ public class Board extends JPanel{
         	System.out.println("");
         }
 	}
-	
+	public void fillBoard(int noPlayers)
+	{
+		int n = noPlayers;
+		if(n==2) {
+			for(int i=0; i<=3; i++) {  
+				for(int j=0; j<=i; j++) { 
+					fields[13+j][9+i].accept(new Peg(Color.blue)); 
+					fields[3-j][7-i].accept(new Peg(Color.red));
+				}
+			}
+		} else if(n==3) {
+			for(int i=0; i<=3; i++) {
+				for(int j=0; j<=i; j++) {
+					fields[9+i][4+j].accept(new Peg(Color.red)); 
+					fields[9+i][13+j].accept(new Peg(Color.blue)); 
+					fields[i][4+j].accept(new Peg(Color.green)); 
+				}
+			}
+		} else if(n==4) {
+			for(int i=0; i<=3; i++) { 
+				for(int j=0; j<=i; j++) {
+					fields[9+i][4+j].accept(new Peg(Color.red)); 
+					fields[7-i][12-j].accept(new Peg(Color.blue));
+					fields[16-i][12-j].accept(new Peg(Color.green));
+					fields[i][4+j].accept(new Peg(Color.yellow));
+				}
+			}
+		} else if(n==6) {
+			for(int i=0; i<=3; i++) { //setup all triangles 
+				for(int j=0; j<=i; j++) {
+					fields[7-i][3-j].accept(new Peg(Color.red)); 
+					fields[9+i][4+j].accept(new Peg(Color.blue));
+					fields[16-i][12-j].accept(new Peg(Color.green));
+					fields[9+i][13+j].accept(new Peg(Color.yellow));
+					fields[7-i][12-j].accept(new Peg(Color.cyan));
+					fields[i][4+j].accept(new Peg(Color.MAGENTA));
+				}
+			}
+		}
+		repaint();
+	}
 	public void drawBoardBorders(int height)
 	{
         David_Star.add(new Polygon(new int[] {p1.x, p2.x,p3.x }, new int[] {p1.y, p2.y, p3.y}, 3));
         David_Star.add(new Polygon(new int[] {p4.x, p5.x, p6.x}, new int[] {p4.y, p5.y, p6.y}, 3));
 	}
-	public void drawFieldsBases() {
-        drawFieldsBase1();
-        drawFieldsBase2();
-        drawFieldsBase3();
-        drawFieldsBase4();
-        drawFieldsBase5();
-        drawFieldsBase6();
-	}
-	public void drawFieldsBase1(){
-		p5.y+=r*1.3;
-		p5.x-=0.5*r;
-		for(int k = 0;k<4;k++) {
-			for(int i=4;i<k+5;i++) {
-				fields[k][i] = new BaseField(p5.x,p5.y,r,Color.white);  			
-				if(NoPlayers== 2 || NoPlayers == 4|| NoPlayers == 6)
-					fields[k][i].accept(new Peg(Color.blue));	
-				p5.x += (height*0.045);
-			}
-			p5.y+=r*(height*0.0014375);
-			p5.x-=(k+1.5)*(height*0.045);
-   	 	}
-
-	}
-	public void drawFieldsBase2() {
-		p1.y+=(height*0.005);
-		p1.x+=(height*0.022);
-      	 for(int k = 4;k<9;k++)
-      	 {
-      		 for(int i=k-4;i<4;i++)
-      		 {
-      			fields[k][i] = new BaseField(p1.x,p1.y,r,Color.black);
-      			if(NoPlayers== 3 || NoPlayers == 4|| NoPlayers == 6)
-      			fields[k][i].accept(new Peg(Color.yellow));	
-      			 p1.x += (height*0.045);
-      		 }
-      		 p1.y+=r*(height*0.0014375);
-      		 p1.x-= (height*0.045*(7-k+0.5));
-      	 }
-	}
-	public void drawFieldsBase3() {
-		p3.y+=(height*0.005);
-		p3.x-=(height*0.022)+r;
-		for(int k = 4;k<8;k++){
-			for(int i = 12; i>4+k;i--) {
-				fields[k][i] = new BaseField(p3.x,p3.y,r,Color.black);
-				if(NoPlayers== 3 ||  NoPlayers == 6)
-				fields[k][i].accept(new Peg(Color.magenta));	
-     			 p3.x -= (height*0.045);
-     			
-			}
-			 p3.y+=r*(height*0.0014375);
-      		 p3.x+= (height*0.045*(7-k+0.5));
-		}	
-	}
-	public void drawFieldsBase4() {
-		p4.y-=r*1.1;
-		p4.x+=0.5*r;
-		for(int k = 12;k>8;k--) {
-			for(int i=4;i<(k%8)+4;i++) {
-				fields[k][i] = new BaseField(p4.x,p4.y,r,Color.blue);  			
-				if( NoPlayers == 6)
-				fields[k][i].accept(new Peg(Color.green));	
-				p4.x += (height*0.045);
-			}
-			p4.y-=r*(height*0.0014375);
-			p4.x-=height*0.045*(k-8.5);
-   	 	}
-	}
-	public void drawFieldsBase5() {
+	public void drawFields() {
+		int tHeight=160;
+		int tWidth=92;
 		p6.y-=r*4.5;
 		p6.x-=3.5*r;
-		for(int k = 9;k<13;k++) {
-			for(int i=13;i<14+(k-1)%4;i++) {
-			
-				fields[k][i] = new BaseField(p6.x,p6.y,r,Color.blue);  		
-				if(NoPlayers== 4 ||  NoPlayers == 6)
-				fields[k][i].accept(new Peg(Color.cyan));	
+		p5.y+=r*1.3;
+		p5.x-=0.5*r;
+		p2.y-=2.4*r;
+		p2.x-=0.5*r;
+		p1.y+=tHeight-(int)(2*r);
+		p1.x+=tWidth-(int)(0.8*r);
+		
+		p3.y+=tHeight-(int)(2*r);
+		p3.x-=tWidth+(int)(0.2*r);
+		p4.x=p1.x;
+		p4.y=p1.y+(int)(2.2*r);
+		
+		for(int k = 0;k<4;k++) {
+			for(int i=4;i<k+5;i++) {
+				fields[k][i] = new BaseField(p5.x,p5.y,r,Color.black);  			
+				p5.x += (height*0.045);
+				fields[16-k][16-i] = new BaseField(p2.x,p2.y,r,Color.black);  				
+				p2.x-= (height*0.045);
+				fields[7-k][i-k-1] = new BaseField(p1.x,p1.y,r,Color.black);
+     			p1.x += (height*0.045);
+     			fields[k+9][i] = new BaseField(p3.x,p3.y,r,Color.black);	
+    			p3.x += (height*0.045);
+				fields[k+9][i+9] = new BaseField(p4.x,p4.y,r,Color.black);  			
+				p4.x += (height*0.045);
+				fields[7-k][i+8-k] = new BaseField(p6.x,p6.y,r,Color.black);  		
 				p6.x-= (height*0.045);
 			}
 			p6.y+=r*(height*0.0014375);
-			p6.x+=height*0.045*(k-7.5);
-   	 	}
-	}
-	public void drawFieldsBase6() {
-		p2.y-=2.4*r;
-		p2.x-=0.5*r;
-		for(int k = 16;k>=13;k--) {
-			for(int i=12;i>8+k-13;i--) {
-				fields[k][i] = new BaseField(p2.x,p2.y,r,Color.blue);  			
-				fields[k][i].accept(new Peg(Color.red));	
-				p2.x-= (height*0.045);
-			}
+			p6.x+=height*0.045*(k+1.5);
+			p5.y+=r*(height*0.0014375);
+			p5.x-=(height*0.045)*(k+1.5);
+			p4.y+=r*(height*0.0014375);
+			p4.x-=height*0.045*(k+1.5);
+			p3.y-=r*(height*0.0014375);
+      		p3.x-= (height*0.045)*(k+1.5);
 			p2.y-=r*(height*0.0014375);
-			p2.x-=height*0.045*(k-17.5);
-			
+			p2.x+=(height*0.045)*(k+1.5);
+     		p1.y-=r*(height*0.0014375);
+     		p1.x-= (height*0.045)*(k+1.5);
+
    	 	}
 	}
 	public void drawInnerField1() {
-		p1.y-=r*5.7;
-		p1.x+=r*2.4;
+		p1.y+=r;
+		p1.x+=6.3*r;
 		for(int k = 4;k<9;k++)
 		{
 			for(int i=4;i<5+k;i++) {
