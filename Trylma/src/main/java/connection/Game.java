@@ -189,6 +189,9 @@ public class Game {
 			if(this==players[players.length-1]) {
 				currentPlayer=players[currentPlayerIndex];
 				currentPlayer.output.println("MESSAGE Your move");
+				for(Player p : players)
+					if(p!=null && !p.equals(currentPlayer))
+						p.output.println("MESSAGE " + currentPlayer.name + "' s move");
 			} else {
 				output.println("MESSAGE Waiting for opponents");
 			}
@@ -250,8 +253,10 @@ public class Game {
 				canMove=true;
 				jumpedOverPeg=false;
 				movedPeg=null;
-				output.println("MESSAGE End of turn");
 				currentPlayer.output.println("MESSAGE Your move");
+				for(Player p : players)
+					if(p!=null && !p.equals(currentPlayer))
+						p.output.println("MESSAGE " + currentPlayer.name + "' s move");
 			} catch(Exception e) {
 				output.println("MESSAGE " + e.getMessage());
 			}

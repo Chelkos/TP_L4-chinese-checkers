@@ -26,7 +26,7 @@ public class TrilmaClient implements ITrilmaClient{
 	private JFrame frame;
 	private JLabel messageLabel;
 	private Board board;
-	private Field selectedField=null; //Set these two fields to null after (in)valid move!
+	private Field selectedField=null; 
 	private Field targetField=null;
 	private Socket socket;
 	private Scanner input;
@@ -50,21 +50,10 @@ public class TrilmaClient implements ITrilmaClient{
         	public void mousePressed(MouseEvent e) {
         		output.println("END_TURN");
         	}
-        	
-        	
         });
-        try
-        {
 		board=new Board();
-        }
-        catch(NumberFormatException e)
-        {
-        		System.out.println("Invalid Number of players");
-        		return;
-        		
-        }
         frame.add(board);
-		board.setBackground(Color.WHITE);//
+		board.setBackground(Color.WHITE);
 		board.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				int r=-1, p=-1;
@@ -85,8 +74,8 @@ public class TrilmaClient implements ITrilmaClient{
 				if(clickedField==null)
 					return;
 				if(selectedField==null) {
-					selectedField=clickedField; //validate selection by request here and if (INVALID SELECTION ?)
-					output.println("SELECT "+ r + "|" + p);	//answer in play(), reset to null
+					selectedField=clickedField; 
+					output.println("SELECT "+ r + "|" + p);	
 				}
 				else {
 					targetField=clickedField;
@@ -143,7 +132,7 @@ public class TrilmaClient implements ITrilmaClient{
                 } else if (response.startsWith("DEFEAT")) {
                 		messageLabel.setText("Loser");
                 } else if (response.startsWith("PLAYER_LEFT")) {
-                	messageLabel.setText("Player: "+ response.substring(response.indexOf(":")+1) +"left");
+                	messageLabel.setText("Player: "+ response.substring(response.indexOf(":")+1) +" left");
                 }
                 else if (response.startsWith("MESSAGE")) {
                 	messageLabel.setText(response.substring(8));
