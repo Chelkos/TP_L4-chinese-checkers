@@ -1,20 +1,29 @@
 package gameobjects;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
+
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Ellipse2D.*;
+
 /**
  * Abstract field on board, subtypes: inner field, base field.
  * Possibly visited object with peg as visitor (Visitor pattern).
  * @see InnerField, BaseField
  */
-public abstract class Field extends Ellipse2D.Float{
+public  class Field extends Ellipse2D.Float{
 		protected Peg visitor;
-		protected float radius;
-		public abstract void accept(Peg peg);
+		
+		public Field(int x, int y, int r) {
+			this.visitor=null;
+			this.x=x;
+			this.y=y;
+			this.height=r;
+			this.width=r;
+		}
+		
+		public void accept(Peg peg) {
+			this.visitor=peg;
+		}
+		
 		public Peg getVisitor(){
 			return this.visitor;
 		}
+		
 }

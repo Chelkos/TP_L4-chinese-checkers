@@ -3,9 +3,6 @@ package connection;
 import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import exceptions.CreatingPlayerException;
-
 import java.awt.Color;
 
 /*

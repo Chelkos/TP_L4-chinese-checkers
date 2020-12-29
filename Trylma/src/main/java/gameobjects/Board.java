@@ -1,12 +1,7 @@
 package gameobjects;
 import javax.swing.*;
 import java.util.ArrayList;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Ellipse2D.*;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.Ellipse2D.Float;
 /**
  * Hexagram-shaped board with inner hexagon 6 "bases" 
  *
@@ -51,8 +46,6 @@ public class Board extends JPanel{
         	{
         		if(fields[k][i]==null)
         			System.out.print("X ");
-        		else if(fields[k][i].getClass()==BaseField.class)
-        			System.out.print("Pb");
         		else
         			System.out.print("Pi");
         		
@@ -128,17 +121,17 @@ public class Board extends JPanel{
 		p4.y=p1.y+(int)(2.2*r);
 		for(int k = 0;k<4;k++) {
 			for(int i=4;i<k+5;i++) {
-				fields[k][i] = new BaseField(p5.x,p5.y,r,Color.black);  			
+				fields[k][i] = new Field(p5.x,p5.y,r);  			
 				p5.x += (height*0.045);
-				fields[16-k][16-i] = new BaseField(p2.x,p2.y,r,Color.black);  				
+				fields[16-k][16-i] = new Field(p2.x,p2.y,r);  				
 				p2.x-= (height*0.045);
-				fields[7-k][i-k-1] = new BaseField(p1.x,p1.y,r,Color.black);
+				fields[7-k][i-k-1] = new Field(p1.x,p1.y,r);
      			p1.x += (height*0.045);
-     			fields[k+9][i] = new BaseField(p3.x,p3.y,r,Color.black);	
+     			fields[k+9][i] = new Field(p3.x,p3.y,r);	
     			p3.x += (height*0.045);
-				fields[k+9][i+9] = new BaseField(p4.x,p4.y,r,Color.black);  			
+				fields[k+9][i+9] = new Field(p4.x,p4.y,r);  			
 				p4.x += (height*0.045);
-				fields[7-k][i+8-k] = new BaseField(p6.x,p6.y,r,Color.black);  		
+				fields[7-k][i+8-k] = new Field(p6.x,p6.y,r);  		
 				p6.x-= (height*0.045);
 			}
 			p3.y-=r*(height*0.0014375);
@@ -162,7 +155,7 @@ public class Board extends JPanel{
 		for(int k = 4;k<9;k++)
 		{
 			for(int i=4;i<5+k;i++) {
-				fields[k][i] = new InnerField(p1.x,p1.y,r);  		
+				fields[k][i] = new Field(p1.x,p1.y,r);  		
 				 p1.x += (height*0.05);
 			}
 			p1.y+=r*1.2;
@@ -176,7 +169,7 @@ public class Board extends JPanel{
 		{
 			for(int i=5+k-9;i<13;i++)
 			{
-				fields[k][i] = new InnerField(p1.x,p1.y,r);  
+				fields[k][i] = new Field(p1.x,p1.y,r);  
 				p1.x+= (height*0.05);
 				
 			}
