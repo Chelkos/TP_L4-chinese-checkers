@@ -10,15 +10,22 @@ import exceptions.InvalidSelectException;
 
 //checking server's response for each action
 public class GameRulesTest {
-
+	DummyClient client1;
+	DummyClient client2;
+	String response;
 	@Test
 	public void invalidSelectionTest() { //not your peg, empty field
 		try {
-			
-		DummyClient client1 = new DummyClient();
-		DummyClient client2 = new DummyClient();
-		client1.board.fillBoard(2);
-		String response =  client1.input.nextLine();
+			 client1 = new DummyClient();
+			 client2 = new DummyClient();
+				}
+				catch(Exception e)
+				{
+					
+				}
+			client1.board.fillBoard(2);
+			client2.board.fillBoard(2);
+		 response =  client1.input.nextLine();
 		response = client1.input.nextLine();
 		assertEquals(response,"PLAYERS: 2");
 		response = client1.input.nextLine();
@@ -27,19 +34,30 @@ public class GameRulesTest {
 		client1.output.println("SELECT 6|6");
 		response = client1.input.nextLine();
 		assertEquals(response,"INVALID_SELECTION This field is empty!");
-		client1.output.println("SELECT 4|0");
-		response = client1.input.nextLine();
-		assertEquals(response,"VALID_SELECTION");
-		}
-		catch(Exception e)
-		{
-			assertEquals(1, 2);
-		}
+
 	}
 	
 	@Test
 	public void validSelectionTest() { 
-		
+		try {
+			 client1 = new DummyClient();
+			 client2 = new DummyClient();
+				}
+				catch(Exception e)
+				{
+					
+				}
+			client1.board.fillBoard(2);
+			client2.board.fillBoard(2);
+			response = client1.input.nextLine();
+			response = client1.input.nextLine();
+			response =  client1.input.nextLine();
+			System.out.println(response);
+		client1.output.println("SELECT 4|0");
+		response = client1.input.nextLine();
+		response = client1.input.nextLine();
+		System.out.println(response);
+		assertEquals(response,"VALID_SELECTION");
 	}
 	
 	@Test
@@ -55,6 +73,26 @@ public class GameRulesTest {
 	@Test
 	public void notYourTurnTest() {
 		
+	}
+	@Test
+	public void endTurnTest() {
+		try {
+			 client1 = new DummyClient();
+			 client2 = new DummyClient();
+				}
+				catch(Exception e)
+				{
+					
+				}
+			client1.board.fillBoard(2);
+			client2.board.fillBoard(2);
+			response = client1.input.nextLine();
+			response = client1.input.nextLine();
+			response =  client1.input.nextLine();
+			response = client1.input.nextLine();
+			client1.output.println("END_TURN");
+			response = client1.input.nextLine();
+			assertEquals(response,"MESSAGE Not your turn!");
 	}
 	
 }
