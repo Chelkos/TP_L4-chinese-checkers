@@ -3,6 +3,9 @@ package connection;
 import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import rules.*;
+
 import java.awt.Color;
 
 /*
@@ -29,7 +32,10 @@ public class TrilmaServer {
             System.out.println("Original Trilma Server is Running...");
             ExecutorService pool = Executors.newFixedThreadPool(200); //
             while (true) {
-                Game game = new Game(n);
+                Game game = new Game(n).with(new BasicSelectionRule())
+                		.with(new BasicMovingRule())
+                		.with(new JumpDistanceRule())
+                		.with(new CantMoveOutOfBaseRule());
                 game.randomizePlayer(); 
                 for(int i=0; i<n; i++) {
                     pool.execute(game.new Player(listener.accept(), defaultPlayerName[i], defaultPlayerColor[i]));

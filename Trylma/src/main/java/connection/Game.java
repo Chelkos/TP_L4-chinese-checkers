@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
 import exceptions.IllegalMoveException;
-import exceptions.InvalidSelectException;
+import exceptions.IllegalSelectionException;
 import gameobjects.Peg;
+import rules.Rule;
 
 public class Game {
 	private Peg[][] board; //server version of board, only info about players needed, so Pegs instead of Fields
@@ -17,11 +20,39 @@ public class Game {
 	private Player[] players; //players in game
 	private Player currentPlayer;
 	private int currentPlayerIndex;
+	private GameDAO gameDAO;
+	private List<Rule> rules;
 	
 	public Game(int numberOfPlayers) {
 		this.players=new Player[numberOfPlayers];
 		this.board=new Peg[17][17];
 		this.baseField=new Player[17][17];
+		this.gameDAO=new GameDAO();
+		this.rules=new ArrayList<Rule>();
+	}
+	
+	public Game with(Rule rule) {
+		rules.add(rule);
+		return this;
+	}
+	
+	public GameInterface getDecoratedInterface() {
+		gameDAO.update(board, baseField, currentPlayer);
+		GameInterface trilmaInterface=new DefaultTrilmaInterface();
+		for(Rule rule : rules) {
+			rule.setGameDAO(gameDAO);
+			rule.setDecoratedInterface(trilmaInterface);
+			trilmaInterface=rule;
+		}
+		return trilmaInterface;
+	}
+	
+	public void addPlayer(Player player) {
+		for(int i=0; i<players.length; i++)
+			if(players[i]==null) {
+				players[i]=player;
+				return;
+			}
 	}
 	
 	public void randomizePlayer() {
@@ -83,34 +114,12 @@ public class Game {
 		}
 	}
 	
-	public void addPlayer(Player player) {
-		for(int i=0; i<players.length; i++)
-			if(players[i]==null) {
-				players[i]=player;
-				return;
-			}
-	}
-	
 	public boolean hasWinner() {
 		for(int i=0; i<board.length; i++)
 			for(int j=0; j<board[i].length; j++)
 				if(board[i][j]!=null && board[i][j].getOwnerColor()==currentPlayer.color && baseField[i][j]!=currentPlayer)
 					return false;
 		return true;
-	}
-	
-	public synchronized void select(int begI, int begJ, Player player) throws InvalidSelectException{
-		if(player!=currentPlayer)
-			throw new InvalidSelectException("Not your turn!");
-		else if(board[begI][begJ]==null)
-			throw new InvalidSelectException("This field is empty!");
-		else if(board[begI][begJ].getOwnerColor()!=currentPlayer.color)
-			throw new InvalidSelectException("This is not your peg!");
-	}
-	
-	public synchronized void move(int begI, int begJ, int endI, int endJ, Player player) throws IllegalMoveException{
-		verifyMove(begI, begJ, endI, endJ, player);
-		board[endI][endJ]=board[begI][begJ]; board[begI][begJ]=null;
 	}
 	
 	public synchronized void endTurn(Player player) throws Exception{
@@ -120,30 +129,19 @@ public class Game {
 		currentPlayer=players[currentPlayerIndex];
 	}
 	
-	private void verifyMove(int begI, int begJ, int endI, int endJ, Player player) throws IllegalMoveException {
-		if(player!=currentPlayer)
-			throw new IllegalMoveException("Not your turn!");
-		else if(board[endI][endJ]!=null)
-			throw new IllegalMoveException("This field is occupied!");
-		else if(baseField[begI][begJ]==currentPlayer && baseField[endI][endJ]!=currentPlayer)
-			throw new IllegalMoveException("You can't move out of base!");
-		else if(player.movedPeg!=null && board[begI][begJ]!=player.movedPeg)
-			throw new IllegalMoveException("You can move only one peg in turn!");
-		int distance=Math.max(Math.abs(endI-begI), Math.abs(endJ-begJ)); //distance in maximum metric
-		if(distance==1 && !player.jumpedOverPeg) { //jump to adjacent field, can be done only once and can't be combined with jump over peg
-			player.canMove=false; //processCommands() will call for end of turn automatically
-		} else if(distance==2 && Math.abs(endI-begI)!=1 && Math.abs(endJ-begJ)!=1) { //jump in a straight line over peg
-			player.jumpedOverPeg=true;
-			int medI=(begI+endI)/2, medJ=(begJ+endJ)/2; //coordinates of field between beg and end
-			if(board[medI][medJ]==null) //checks if there is a peg to jump over
-				throw new IllegalMoveException("This move is not allowed!");
-		} else {
-			throw new IllegalMoveException("This move is not allowed!");
+	class DefaultTrilmaInterface implements GameInterface {
+
+		@Override
+		public synchronized void select(int begI, int begJ, Player player) throws IllegalSelectionException { }
+
+		@Override
+		public synchronized void move(int begI, int begJ, int endI, int endJ, Player player) throws IllegalMoveException {
+			board[endI][endJ]=board[begI][begJ]; board[begI][begJ]=null;
 		}
-		player.movedPeg=board[begI][begJ]; //finally indicates which peg was successfully moved
+		
 	}
 	
-	class Player implements Runnable {
+	public class Player implements Runnable {
 		private int[] selection=new int[2]; //auxiliary variable for selection of field
 		public String name;
 		public Color color;
@@ -222,16 +220,16 @@ public class Game {
 		
 		private void processSelectCommand(int begI, int begJ) {
 			try {
-				select(begI, begJ, this);
+				getDecoratedInterface().select(begI, begJ, this);
 				output.println("VALID_SELECTION");
-			} catch(InvalidSelectException e) {
+			} catch(IllegalSelectionException e) {
 				output.println("INVALID_SELECTION " + e.getMessage());
 			}
 		}
 		
 		private void processMoveCommand(int begI, int begJ, int endI, int endJ) {
 			try {
-				move(begI, begJ, endI, endJ, this);
+				getDecoratedInterface().move(begI, begJ, endI, endJ, this);
 				output.println("VALID_MOVE");
 				for(Player p : players)
 					if(!p.equals(this))

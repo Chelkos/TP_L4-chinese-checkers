@@ -6,7 +6,7 @@ import org.junit.*;
 import org.mockito.Mockito;
 
 import connection.TrilmaClient;
-import exceptions.InvalidSelectException;
+import exceptions.IllegalSelectionException;
 
 //checking server's response for each action
 public class GameRulesTest {
