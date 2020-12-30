@@ -136,6 +136,7 @@ public class Game {
 
 		@Override
 		public synchronized void move(int begI, int begJ, int endI, int endJ, Player player) throws IllegalMoveException {
+			player.movedPeg=board[begI][begJ]; //indicates which peg was moved this turn
 			board[endI][endJ]=board[begI][begJ]; board[begI][begJ]=null;
 		}
 		

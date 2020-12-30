@@ -17,7 +17,7 @@ public class BasicMovingRule extends MovingRule {
 		else if(target!=null)
 			throw new IllegalMoveException("This field is occupied!");
 		else if(player.movedPeg!=null && selection!=player.movedPeg)
-			throw new IllegalMoveException("You can move only one peg in turn!");
+			throw new IllegalMoveException("You can move only one peg in a turn!");
 		game.move(begI, begJ, endI, endJ, currentPlayer);
 	}
 
