@@ -143,7 +143,6 @@ public class Game {
 	}
 	
 	public class Player implements Runnable {
-		private int[] selection=new int[2]; //auxiliary variable for selection of field
 		public String name;
 		public Color color;
 		public boolean canMove=true;
@@ -197,7 +196,8 @@ public class Game {
 				
 		}
 		
-		private void processCommands() {			
+		private void processCommands() {	
+			int[] selection=new int[2];
 			while (input.hasNextLine()) {
 				String command = input.nextLine();
 	            if (command.startsWith("QUIT")) {

@@ -2,7 +2,8 @@ package gameobjects;
 import javax.swing.*;
 import java.awt.*;
 public class Board extends JPanel{
-public Field fields[][];
+	
+	public Field fields[][];
 	private Shape[] David_Star;
 	private int height;
     
@@ -145,8 +146,8 @@ public Field fields[][];
 	    for(int k=0; k<20;k++) {
 	    	for(int i=0;i<20;i++) {
 	    		if(fields[k][i]!=null) {
-	    			if(fields[k][i].visitor!=null) {
-	    				g2.setColor(fields[k][i].visitor.getOwnerColor());		
+	    			if(fields[k][i].getVisitor()!=null) {
+	    				g2.setColor(fields[k][i].getVisitor().getOwnerColor());		
 	    				g2.fill(fields[k][i]);
 	    			}
 	    			else {

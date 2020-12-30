@@ -8,7 +8,7 @@ import java.awt.geom.Ellipse2D;
  * @see InnerField, BaseField
  */
 public  class Field extends Ellipse2D.Float{
-		protected Peg visitor;
+		private Peg visitor;
 		
 		public Field(int x, int y, int r) {
 			this.visitor=null;
