@@ -8,7 +8,7 @@ import rules.*;
 
 import java.awt.Color;
 
-/*
+/**
  * A server class for Trilma, creates game, establishes connection through socket, 
  * adds players to game.
  * 

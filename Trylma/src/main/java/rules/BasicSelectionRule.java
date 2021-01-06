@@ -5,8 +5,7 @@ import connection.GameDAO;
 import exceptions.IllegalSelectionException;
 import gameobjects.Peg;
 /**
- * 
- * Basic Selection Rule used to chceck if the selection from the client was correct
+ * Basic selection rule used to check if the selection from the client was correct.
  *
  */
 public class BasicSelectionRule extends SelectionRule {

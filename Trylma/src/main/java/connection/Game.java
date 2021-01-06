@@ -16,7 +16,7 @@ import rules.Rule;
 /**
  * 
  * A game class for Trilma, executes commands, checks if the action is permitted by the rules, sends back commands to TrilmaClient
- *
+ * @see TrilmaClient
  */
 public class Game {
 	private Peg[][] board; //server version of board, only info about players needed, so Pegs instead of Fields
@@ -26,7 +26,10 @@ public class Game {
 	private int currentPlayerIndex;
 	private GameDAO gameDAO;
 	private List<Rule> rules;
-	
+	/**
+	 * Initiates game with given number of players.
+	 * @param numberOfPlayers number of players
+	 */
 	public Game(int numberOfPlayers) {
 		this.players=new Player[numberOfPlayers];
 		this.board=new Peg[17][17];
@@ -34,12 +37,20 @@ public class Game {
 		this.gameDAO=new GameDAO();
 		this.rules=new ArrayList<Rule>();
 	}
-	
+	/**
+	 * Adds given rule to the interface
+	 * @param rule
+	 * @return Game with rule added to the interface
+	 */
 	public Game with(Rule rule) {
 		rules.add(rule);
 		return this;
 	}
 	
+	/**
+	 * Function used to get up-to-date interface.
+	 * @return interface decorated with rules
+	 */
 	public GameInterface getDecoratedInterface() {
 		gameDAO.update(board, baseField, currentPlayer);
 		GameInterface trilmaInterface=new DefaultTrilmaInterface();
@@ -51,7 +62,7 @@ public class Game {
 		return trilmaInterface;
 	}
 	/**
-	 * Adds a new player to the current players array
+	 * Adds a new player to the current players array.
 	 * @param player
 	 * 
 	 */
@@ -63,13 +74,13 @@ public class Game {
 			}
 	}
 	/**
-	 * Sets first player randomly
+	 * Sets first player randomly.
 	 */
 	public void randomizePlayer() {
 		currentPlayerIndex=new Random().nextInt(players.length);
 	}
 	/**
-	 * Initializes a multidimensional array of the Game depending on the amount of players
+	 * Initializes a server-side representation of board and locations of base fields.
 	 */
 	public void setup() {
 		int n=players.length;
@@ -127,7 +138,7 @@ public class Game {
 	}
 	/**
 	 * 
-	 * @return Returns true when the game was finished by a player, later on Game sends a message to the client
+	 * @return Returns true when there is a winner.
 	 */
 	public boolean hasWinner() {
 		for(int i=0; i<board.length; i++)
@@ -137,9 +148,9 @@ public class Game {
 		return true;
 	}
 	/**
-	 * Ends a turn for a current player and sets next player as a currentplayer 
+	 * Ends a turn for a current player and sets next player as a current player 
 	 * @param player who tried to finish their turn
-	 * @throws Exception if it's not the current player the one recieves a message of an error 
+	 * @throws Exception if it's not the current player the one receives a message of an error 
 	 */
 	public synchronized void endTurn(Player player) throws Exception{
 		if(player!=currentPlayer)
@@ -162,7 +173,7 @@ public class Game {
 	}
 	/**
 	 * 
-	 * Player represents a single TrilmaClient for a Game Class
+	 * A server-side interface for client. 
 	 *
 	 */
 	public class Player implements Runnable {
@@ -175,15 +186,19 @@ public class Game {
 		public Scanner input;
 		public PrintWriter output;
 		
+		/**
+		 * Creates Player - server-side interface for client.
+		 * @param socket connection socket
+		 * @param name custom player's name
+		 * @param color basic player's identifier - color of their pegs
+		 */
 		public Player(Socket socket, String name, Color color) {
 			this.socket=socket;
 			this.name=name;
 			this.color=color;
 			addPlayer(this);
 		}
-		/**
-		 * Sets the game up
-		 */
+		
 		@Override
 		public void run() {
 			try {
@@ -204,7 +219,7 @@ public class Game {
 			
 		}
 		/**
-		 * Prepares the game, adds players, sends Clients a welcome message, sends messages when it's the player's move, waits for players if necessary 
+		 * Setups I/O features for player, sends them a welcome message and expected number of players, sends messages when it's the player's move, waits for players if necessary. 
 		 * @throws IOException
 		 */
 		private void setup() throws IOException{
@@ -224,7 +239,7 @@ public class Game {
 				
 		}
 		/**
-		 * Processes Commands from TrilmaClient to adequate methods
+		 * Processes Commands from TrilmaClient to adequate methods.
 		 */
 		private void processCommands() {	
 			int[] selection=new int[2];
@@ -249,7 +264,7 @@ public class Game {
 	        }
 		}
 		/**
-		 * Checks if the Select is correct, delegating the command further 
+		 * Checks if the Select is correct, delegating the command further .
 		 * @param begI position X of a Peg on the Board
 		 * @param begJ position Y of a Peg on the Board
 		 * @see SelectionRule
@@ -263,10 +278,12 @@ public class Game {
 			}
 		}
 		/**
-		 * Checks if the move is correct, delegating the command further, if is sends a message to client to move the peg on its Board
-		 * If the move was correct, checks if all of Pegs are in the base to provide victory, sends a message if true
+		 * Checks if the move is correct, delegating the command further, if is sends a message to client to move the peg on its Board.
+		 * If the move was correct, checks if all of Pegs are in the base to provide victory, sends a message if true.
 		 * @param begI position X of a Peg on the Board
 		 * @param begJ position Y of a Peg on the Board
+		 * @param endI target position X on the Board
+		 * @param endJ target position Y on the Board
 		 * @see MovingRule
 		 */
 		private void processMoveCommand(int begI, int begJ, int endI, int endJ) {
@@ -287,7 +304,7 @@ public class Game {
 			}
 		}
 		/**
-		 * Ends the turn of current player, sets next player as a current player, sends a message
+		 * Ends the turn of current player, sets next player as a current player, sends a message.
 		 */
 		private void processEndTurnCommand() {
 			try {

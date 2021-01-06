@@ -89,7 +89,7 @@ public class TrilmaClient implements ITrilmaClient{
 		});
 	}
 	/**
-	 * Sends and recieves messages from the server 
+	 * Sends and receives messages from the server 
 	 */
     public void play() throws Exception {
         try {

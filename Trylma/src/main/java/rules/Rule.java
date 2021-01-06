@@ -3,6 +3,10 @@ package rules;
 import connection.GameDAO;
 import connection.GameInterface;
 
+/**
+ * Abstract class for decorating rule.
+ *
+ */
 public abstract class Rule implements GameInterface {
 	protected GameInterface game;
 	protected GameDAO gameDAO;

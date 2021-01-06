@@ -9,7 +9,10 @@ import java.awt.Color;
  */
 public class Peg {
 	private Color ownerColor;
-	
+	/**
+	 * Creates peg of given color.
+	 * @param ownerColor
+	 */
 	public Peg(Color ownerColor) {
 		this.ownerColor=ownerColor;
 	}
