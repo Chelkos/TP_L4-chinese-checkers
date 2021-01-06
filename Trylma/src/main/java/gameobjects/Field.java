@@ -5,7 +5,6 @@ import java.awt.geom.Ellipse2D;
 /**
  * Abstract field on board, subtypes: inner field, base field.
  * Possibly visited object with peg as visitor (Visitor pattern).
- * @see InnerField, BaseField
  */
 public  class Field extends Ellipse2D.Float{
 		private Peg visitor;

@@ -2,7 +2,11 @@ package connection;
 
 import connection.Game.Player;
 import gameobjects.Peg;
-
+/**
+ * 
+ * Used for checking the values of private fields in Game
+ *
+ */
 public class GameDAO {
 	private Peg[][] board;
 	private Player[][] baseField;

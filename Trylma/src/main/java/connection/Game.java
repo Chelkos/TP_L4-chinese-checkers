@@ -13,7 +13,11 @@ import exceptions.IllegalMoveException;
 import exceptions.IllegalSelectionException;
 import gameobjects.Peg;
 import rules.Rule;
-
+/**
+ * 
+ * A game class for Trilma, executes commands, checks if the action is permitted by the rules, sends back commands to TrilmaClient
+ *
+ */
 public class Game {
 	private Peg[][] board; //server version of board, only info about players needed, so Pegs instead of Fields
 	private Player[][] baseField; //if field is a base of certain player, then returns this player, else null
@@ -46,7 +50,11 @@ public class Game {
 		}
 		return trilmaInterface;
 	}
-	
+	/**
+	 * Adds a new player to the current players array
+	 * @param player
+	 * 
+	 */
 	public void addPlayer(Player player) {
 		for(int i=0; i<players.length; i++)
 			if(players[i]==null) {
@@ -54,11 +62,15 @@ public class Game {
 				return;
 			}
 	}
-	
+	/**
+	 * Sets first player randomly
+	 */
 	public void randomizePlayer() {
 		currentPlayerIndex=new Random().nextInt(players.length);
 	}
-	
+	/**
+	 * Initializes a multidimensional array of the Game depending on the amount of players
+	 */
 	public void setup() {
 		int n=players.length;
 		if(n==2) {
@@ -113,7 +125,10 @@ public class Game {
 			}
 		}
 	}
-	
+	/**
+	 * 
+	 * @return Returns true when the game was finished by a player, later on Game sends a message to the client
+	 */
 	public boolean hasWinner() {
 		for(int i=0; i<board.length; i++)
 			for(int j=0; j<board[i].length; j++)
@@ -121,7 +136,11 @@ public class Game {
 					return false;
 		return true;
 	}
-	
+	/**
+	 * Ends a turn for a current player and sets next player as a currentplayer 
+	 * @param player who tried to finish their turn
+	 * @throws Exception if it's not the current player the one recieves a message of an error 
+	 */
 	public synchronized void endTurn(Player player) throws Exception{
 		if(player!=currentPlayer)
 			throw new Exception("Not your turn!");
@@ -141,7 +160,11 @@ public class Game {
 		}
 		
 	}
-	
+	/**
+	 * 
+	 * Player represents a single TrilmaClient for a Game Class
+	 *
+	 */
 	public class Player implements Runnable {
 		public String name;
 		public Color color;
@@ -158,7 +181,9 @@ public class Game {
 			this.color=color;
 			addPlayer(this);
 		}
-		
+		/**
+		 * Sets the game up
+		 */
 		@Override
 		public void run() {
 			try {
@@ -178,7 +203,10 @@ public class Game {
 			}
 			
 		}
-		
+		/**
+		 * Prepares the game, adds players, sends Clients a welcome message, sends messages when it's the player's move, waits for players if necessary 
+		 * @throws IOException
+		 */
 		private void setup() throws IOException{
 			input=new Scanner(socket.getInputStream());
 			output=new PrintWriter(socket.getOutputStream(), true);
@@ -195,7 +223,9 @@ public class Game {
 			}
 				
 		}
-		
+		/**
+		 * Processes Commands from TrilmaClient to adequate methods
+		 */
 		private void processCommands() {	
 			int[] selection=new int[2];
 			while (input.hasNextLine()) {
@@ -218,7 +248,12 @@ public class Game {
 	            }
 	        }
 		}
-		
+		/**
+		 * Checks if the Select is correct, delegating the command further 
+		 * @param begI position X of a Peg on the Board
+		 * @param begJ position Y of a Peg on the Board
+		 * @see SelectionRule
+		 */
 		private void processSelectCommand(int begI, int begJ) {
 			try {
 				getDecoratedInterface().select(begI, begJ, this);
@@ -227,7 +262,13 @@ public class Game {
 				output.println("INVALID_SELECTION " + e.getMessage());
 			}
 		}
-		
+		/**
+		 * Checks if the move is correct, delegating the command further, if is sends a message to client to move the peg on its Board
+		 * If the move was correct, checks if all of Pegs are in the base to provide victory, sends a message if true
+		 * @param begI position X of a Peg on the Board
+		 * @param begJ position Y of a Peg on the Board
+		 * @see MovingRule
+		 */
 		private void processMoveCommand(int begI, int begJ, int endI, int endJ) {
 			try {
 				getDecoratedInterface().move(begI, begJ, endI, endJ, this);
@@ -245,7 +286,9 @@ public class Game {
 				output.println("INVALID_MOVE " + e.getMessage());
 			}
 		}
-		
+		/**
+		 * Ends the turn of current player, sets next player as a current player, sends a message
+		 */
 		private void processEndTurnCommand() {
 			try {
 				endTurn(this);

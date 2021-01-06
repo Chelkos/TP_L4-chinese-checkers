@@ -1,6 +1,12 @@
 package gameobjects;
 import javax.swing.*;
 import java.awt.*;
+/**
+ * 
+ * 
+ * Draws and colors the Trilma Board
+ *
+ */
 public class Board extends JPanel{
 	
 	public Field fields[][];
@@ -20,7 +26,11 @@ public class Board extends JPanel{
      //   setLocationRelativeTo(null);
         setVisible(true);
 	}
-	
+	/**
+	 * 
+	 * @param noPlayers
+	 * colors The fields in the board depending on the number of players
+	 */
 	public void fillBoard(int noPlayers) {
 		int n = noPlayers;
 		if(n==2) {
@@ -61,7 +71,10 @@ public class Board extends JPanel{
 		}
 		repaint();
 	}
-	
+	/**
+	 * adds two triangles and creates their points depending on the height
+	 * @param height - height of the entire frame
+	 */
 	public void drawBorders(int height) {
 		Point[] p=new Point[6];
 		p[0] = new Point((int)(height*0.1666666),(int)(height*0.294));
@@ -73,7 +86,9 @@ public class Board extends JPanel{
         David_Star[0]=(new Polygon(new int[] {p[0].x, p[1].x, p[2].x}, new int[] {p[0].y, p[1].y, p[2].y}, 3));
         David_Star[1]=(new Polygon(new int[] {p[3].x, p[4].x, p[5].x}, new int[] {p[3].y, p[4].y, p[5].y}, 3));
 	}
-	
+	/**
+	 * Draws upper and bottom base circles
+	 */
 	public void drawTopBottom() {
 		int topX=386, topY=104, botX=386, botY=639, r=28;
 		int horizontal=36;
@@ -92,7 +107,9 @@ public class Board extends JPanel{
 			botY-=vertical;
 		}
 	}
-	
+	/**
+	 * Draws the hexagon circles inside the hexagon and in the rest of the bases
+	 */
 	public void drawInterior( ) {
 		int x=150, y=240, r=28;
 		int horizontal=36;
@@ -133,7 +150,9 @@ public class Board extends JPanel{
 			w-=2*rowDisplacement;
 		}
 	}
-	
+	/**
+	 * Draws every circle and shape in the Board
+	 */
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 	   	g2.setPaint(Color.white);

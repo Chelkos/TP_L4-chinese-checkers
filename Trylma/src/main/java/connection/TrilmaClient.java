@@ -21,7 +21,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import gameobjects.*;
-
+/**
+ * 
+ *Trilma Client initializes a Frame for the Client, provides visuals and establishes connection with a server
+ *
+ */
 public class TrilmaClient implements ITrilmaClient{
 	private JFrame frame;
 	private JLabel messageLabel;
@@ -84,7 +88,9 @@ public class TrilmaClient implements ITrilmaClient{
 			}
 		});
 	}
-	
+	/**
+	 * Sends and recieves messages from the server 
+	 */
     public void play() throws Exception {
         try {
         	int noPlayers;

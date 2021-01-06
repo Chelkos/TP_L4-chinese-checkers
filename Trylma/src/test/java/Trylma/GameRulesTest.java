@@ -52,27 +52,84 @@ public class GameRulesTest {
 			response = client1.input.nextLine();
 			response = client1.input.nextLine();
 			response =  client1.input.nextLine();
-			System.out.println(response);
 		client1.output.println("SELECT 4|0");
 		response = client1.input.nextLine();
 		response = client1.input.nextLine();
-		System.out.println(response);
 		assertEquals(response,"VALID_SELECTION");
 	}
 	
 	@Test
 	public void invalidMoveTest() { //move not allowed, field already occupied, check both single and double jump
-		
+	
+
 	}
 	
 	@Test
-	public void validMoveTest() { //check both single and double jump 
-		
+	public void validMoveTest() { //single  jump 
+		try {
+		 client1 = new DummyClient();
+		 client2 = new DummyClient();
+			}
+			catch(Exception e)
+			{
+				
+			}
+		client1.board.fillBoard(2);
+		client2.board.fillBoard(2);
+		response = client1.input.nextLine();
+		response = client1.input.nextLine();
+		response =  client1.input.nextLine();
+	client1.output.println("SELECT 4|3");
+	response = client1.input.nextLine();
+	response = client1.input.nextLine();
+	assertEquals(response,"VALID_SELECTION");
+	client1.output.println("MOVE 4|4");
+	response = client1.input.nextLine();
+	assertEquals(response,"VALID_MOVE");
 	}
-	
+	@Test
+	public void validMoveTestDoubleJump() { // double jump 
+		try {
+		 client1 = new DummyClient();
+		 client2 = new DummyClient();
+			}
+			catch(Exception e)
+			{
+				
+			}
+		client1.board.fillBoard(2);
+		client2.board.fillBoard(2);
+		response = client1.input.nextLine();
+		response = client1.input.nextLine();
+		response =  client1.input.nextLine();
+	client1.output.println("SELECT 4|2");
+	response = client1.input.nextLine();
+	response = client1.input.nextLine();
+	assertEquals(response,"VALID_SELECTION");
+	client1.output.println("MOVE 4|4");
+	response = client1.input.nextLine();
+	assertEquals(response,"VALID_MOVE");
+	}
 	@Test
 	public void notYourTurnTest() {
-		
+		try {
+			 client1 = new DummyClient();
+			 client2 = new DummyClient();
+				}
+				catch(Exception e)
+				{
+					
+				}
+			client1.board.fillBoard(2);
+			client2.board.fillBoard(2);
+			response = client2.input.nextLine();
+			response = client2.input.nextLine();
+			response =  client2.input.nextLine();
+
+			client2.output.println("SELECT 4|0");
+			response =  client2.input.nextLine();
+			
+			assertEquals(response,"INVALID_SELECTION Not your turn!");
 	}
 	@Test
 	public void endTurnTest() {

@@ -4,7 +4,11 @@ import connection.GameDAO;
 import connection.Game.Player;
 import exceptions.IllegalMoveException;
 import gameobjects.Peg;
-
+/**
+ * 
+ * Basic Moving Rule used to chceck if the move by the client was performed correctly
+ *
+ */
 public class BasicMovingRule extends MovingRule {
 
 	@Override
