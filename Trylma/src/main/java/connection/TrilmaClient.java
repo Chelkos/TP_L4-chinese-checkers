@@ -90,6 +90,7 @@ public class TrilmaClient {
 	}
 	/**
 	 * Sends and receives messages from the server 
+	 * @throws Exception on connection fault
 	 */
     public void play() throws Exception {
         try {
