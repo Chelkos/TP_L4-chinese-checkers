@@ -4,10 +4,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-import connection.ITrilmaClient;
 import gameobjects.Board;
 
-public class DummyClient implements ITrilmaClient{
+public class DummyClient {
 	public Socket socket;
 	public Scanner input;
 	public PrintWriter output;

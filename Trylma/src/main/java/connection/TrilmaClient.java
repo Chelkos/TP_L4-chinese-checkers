@@ -26,7 +26,7 @@ import gameobjects.*;
  *Trilma Client initializes a Frame for the Client, provides visuals and establishes connection with a server
  *
  */
-public class TrilmaClient implements ITrilmaClient{
+public class TrilmaClient {
 	private JFrame frame;
 	private JLabel messageLabel;
 	private Board board;
