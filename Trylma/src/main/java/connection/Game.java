@@ -207,11 +207,11 @@ public class Game {
 			} catch(Exception e) {
 				e.printStackTrace();
 			} finally {
-				for(Player p : players)
+				for(Player p : players) {
 					if(p!=null && p.output!=null) {
 						p.output.println("PLAYER_LEFT: " + this.name);
-						break;
 					}
+				}
 				try {
 					socket.close();
 				} catch(IOException e) { }
