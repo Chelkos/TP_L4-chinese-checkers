@@ -315,7 +315,7 @@ public class Game {
 				currentPlayer.output.println("MESSAGE Your move");
 				for(Player p : players)
 					if(p!=null && !p.equals(currentPlayer))
-						p.output.println("MESSAGE " + currentPlayer.name + "' s move");
+						p.output.println("MESSAGE " + currentPlayer.name + "'s move");
 			} catch(Exception e) {
 				output.println("MESSAGE " + e.getMessage());
 			}

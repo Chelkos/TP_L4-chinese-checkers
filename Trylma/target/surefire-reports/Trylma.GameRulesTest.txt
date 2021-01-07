@@ -1,12 +1,16 @@
 -------------------------------------------------------------------------------
 Test set: Trylma.GameRulesTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 5, Skipped: 0, Time elapsed: 54.033 s <<< FAILURE! - in Trylma.GameRulesTest
-endTurnTest(Trylma.GameRulesTest)  Time elapsed: 53.573 s  <<< ERROR!
-java.util.NoSuchElementException: No line found
-	at Trylma.GameRulesTest.endTurnTest(GameRulesTest.java:149)
+Tests run: 7, Failures: 0, Errors: 6, Skipped: 0, Time elapsed: 0.035 s <<< FAILURE! - in Trylma.GameRulesTest
+notYourTurnTest(Trylma.GameRulesTest)  Time elapsed: 0.009 s  <<< ERROR!
+java.lang.NullPointerException
+	at Trylma.GameRulesTest.notYourTurnTest(GameRulesTest.java:123)
 
-validMoveTest(Trylma.GameRulesTest)  Time elapsed: 0.003 s  <<< ERROR!
+endTurnTest(Trylma.GameRulesTest)  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at Trylma.GameRulesTest.endTurnTest(GameRulesTest.java:144)
+
+validMoveTest(Trylma.GameRulesTest)  Time elapsed: 0.001 s  <<< ERROR!
 java.lang.NullPointerException
 	at Trylma.GameRulesTest.validMoveTest(GameRulesTest.java:77)
 
@@ -18,7 +22,7 @@ validMoveTestDoubleJump(Trylma.GameRulesTest)  Time elapsed: 0.001 s  <<< ERROR!
 java.lang.NullPointerException
 	at Trylma.GameRulesTest.validMoveTestDoubleJump(GameRulesTest.java:100)
 
-invalidSelectionTest(Trylma.GameRulesTest)  Time elapsed: 0.001 s  <<< ERROR!
+invalidSelectionTest(Trylma.GameRulesTest)  Time elapsed: 0 s  <<< ERROR!
 java.lang.NullPointerException
 	at Trylma.GameRulesTest.invalidSelectionTest(GameRulesTest.java:26)
 

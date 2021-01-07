@@ -13,7 +13,7 @@ public class CantMoveOutOfBaseRule extends MovingRule {
 		Player currentPlayer=gameDAO.getCurrentPlayer();
 		if(selectionOwner==currentPlayer && targetOwner!=currentPlayer)
 			throw new IllegalMoveException("You can't move out of base!");
-		game.move(begI, begJ, endI, endJ, currentPlayer);
+		game.move(begI, begJ, endI, endJ, player);
 	}
 
 }
