@@ -66,11 +66,8 @@ public class TrilmaClient {
 					for(int j=0; j<board.fields[i].length; j++) {
 						if(board.fields[j][i]!=null && board.fields[j][i].contains(e.getPoint())) {
 							clickedField=board.fields[j][i];
-						
 							r=i; 
 							p=j;
-							System.out.print(i);
-							System.out.println(" "+j);
 							break;
 						}
 					}
@@ -99,11 +96,10 @@ public class TrilmaClient {
             frame.setTitle(response.substring(7));
             response = input.nextLine();
             noPlayers = Integer.parseInt(response.substring(9));
-            System.out.println(noPlayers);
             board.fillBoard(noPlayers);
           
             String trimmed1,trimmed2;
-           int begX,begY,endX,endY;
+            int begX,begY,endX,endY;
            
             while ( input.hasNextLine()) {
                 response =  input.nextLine();

@@ -1,0 +1,17 @@
+/home/kacper/git/TP_L4/Trylma/src/main/java/connection/TrilmaServer.java
+/home/kacper/git/TP_L4/Trylma/src/main/java/gameobjects/Peg.java
+/home/kacper/git/TP_L4/Trylma/src/main/java/exceptions/IllegalMoveException.java
+/home/kacper/git/TP_L4/Trylma/src/main/java/rules/JumpDistanceRule.java
+/home/kacper/git/TP_L4/Trylma/src/main/java/connection/GameInterface.java
+/home/kacper/git/TP_L4/Trylma/src/main/java/rules/SelectionRule.java
+/home/kacper/git/TP_L4/Trylma/src/main/java/rules/BasicMovingRule.java
+/home/kacper/git/TP_L4/Trylma/src/main/java/exceptions/IllegalSelectionException.java
+/home/kacper/git/TP_L4/Trylma/src/main/java/rules/CantMoveOutOfBaseRule.java
+/home/kacper/git/TP_L4/Trylma/src/main/java/rules/BasicSelectionRule.java
+/home/kacper/git/TP_L4/Trylma/src/main/java/gameobjects/Field.java
+/home/kacper/git/TP_L4/Trylma/src/main/java/rules/Rule.java
+/home/kacper/git/TP_L4/Trylma/src/main/java/connection/Game.java
+/home/kacper/git/TP_L4/Trylma/src/main/java/gameobjects/Board.java
+/home/kacper/git/TP_L4/Trylma/src/main/java/rules/MovingRule.java
+/home/kacper/git/TP_L4/Trylma/src/main/java/connection/TrilmaClient.java
+/home/kacper/git/TP_L4/Trylma/src/main/java/connection/GameDAO.java

@@ -14,9 +14,9 @@ public class GameDAO {
 	
 	/**
 	 * Updates information about game's state.
-	 * @param board
-	 * @param baseField
-	 * @param currentPlayer
+	 * @param board current board state
+	 * @param baseField location of players' bases
+	 * @param currentPlayer player currently performing action
 	 */
 	public void update(Peg[][] board, Player[][] baseField, Player currentPlayer) {
 		this.board=board;

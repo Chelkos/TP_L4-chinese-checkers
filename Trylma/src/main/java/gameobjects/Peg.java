@@ -11,7 +11,7 @@ public class Peg {
 	private Color ownerColor;
 	/**
 	 * Creates peg of given color.
-	 * @param ownerColor
+	 * @param ownerColor color of owner
 	 */
 	public Peg(Color ownerColor) {
 		this.ownerColor=ownerColor;

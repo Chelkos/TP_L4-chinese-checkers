@@ -39,7 +39,7 @@ public class Game {
 	}
 	/**
 	 * Adds given rule to the interface
-	 * @param rule
+	 * @param rule rule to add
 	 * @return Game with rule added to the interface
 	 */
 	public Game with(Rule rule) {
@@ -63,7 +63,7 @@ public class Game {
 	}
 	/**
 	 * Adds a new player to the current players array.
-	 * @param player
+	 * @param player new player to add
 	 * 
 	 */
 	public void addPlayer(Player player) {
@@ -220,7 +220,7 @@ public class Game {
 		}
 		/**
 		 * Setups I/O features for player, sends them a welcome message and expected number of players, sends messages when it's the player's move, waits for players if necessary. 
-		 * @throws IOException
+		 * @throws IOException thrown in case of I/O initilaization failure
 		 */
 		private void setup() throws IOException{
 			input=new Scanner(socket.getInputStream());
@@ -267,7 +267,7 @@ public class Game {
 		 * Checks if the Select is correct, delegating the command further .
 		 * @param begI position X of a Peg on the Board
 		 * @param begJ position Y of a Peg on the Board
-		 * @see SelectionRule
+		 * @see rules.SelectionRule
 		 */
 		private void processSelectCommand(int begI, int begJ) {
 			try {
@@ -284,7 +284,7 @@ public class Game {
 		 * @param begJ position Y of a Peg on the Board
 		 * @param endI target position X on the Board
 		 * @param endJ target position Y on the Board
-		 * @see MovingRule
+		 * @see rules.MovingRule
 		 */
 		private void processMoveCommand(int begI, int begJ, int endI, int endJ) {
 			try {
