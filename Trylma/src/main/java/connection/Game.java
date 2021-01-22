@@ -28,13 +28,13 @@ public class Game {
 	private GameDAO gameDAO;
 	private List<Rule> rules;
 	private DataTransfer dataTransfer;
-	private ApplicationContext context;
+	 ApplicationContext context;
 	/**
 	 * Initiates game with given number of players.
 	 * @param numberOfPlayers number of players
 	 */
 	public Game(int numberOfPlayers) {
-		this.context = new ClassPathXmlApplicationContext("Beans.xml");
+		this.context = new ClassPathXmlApplicationContext("beans.xml");
 		this.dataTransfer =  (DataTransfer)context.getBean("DataTransfer");
 		this.players=new Player[numberOfPlayers];
 		this.board=new Peg[17][17];
