@@ -7,11 +7,11 @@ Testy wykonywano przy użyciu JUnit 4
 
 Uruchamianie: 
 W katalogu Trylma należy wywołać polecenie mvn eclipse:eclipse oraz zaimportować gotowy projekt do Eclipsa.
-Aby rozpocząć rozgrywkę należy uruchomić TrilmaServer, podając w linii komend liczbę graczy (2, 3, 4 lub 6),
-a następnie uruchomić odpowiednią liczbę aplikacji TrilmaClient. Piony przemieszczamy myszką.
+Aby rozpocząć rozgrywkę należy uruchomić connection.TrilmaServer, podając w linii komend liczbę graczy (2, 3, 4 lub 6),
+a następnie uruchomić odpowiednią liczbę aplikacji connection.TrilmaClient. Piony przemieszczamy myszką.
 
 Testy:
-Aby przeprowadzić testy (aktualnie tylko klasa GameRulesTest), należy najpierw uruchomić TrilmaServer z parametrem 2 (2 graczy), a następnie GameRulesTest. 
+Aby przeprowadzić testy (aktualnie tylko klasa Trylma.GameRulesTest), należy najpierw uruchomić TrilmaServer z parametrem 2 (2 graczy), a następnie GameRulesTest. 
 
 Dodatkowe:
 W archiwum znajdują się dodatkowo dwa diagramy: klas i aktywności, odpowiednio class_diagram.drawio i activity_diagram.drawio,
