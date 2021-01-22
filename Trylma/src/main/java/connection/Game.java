@@ -1,5 +1,5 @@
 package connection;
-
+import connection.DataTransfer;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import exceptions.IllegalMoveException;
 import exceptions.IllegalSelectionException;
 import gameobjects.Peg;
@@ -26,16 +27,21 @@ public class Game {
 	private int currentPlayerIndex;
 	private GameDAO gameDAO;
 	private List<Rule> rules;
+	private DataTransfer dataTransfer;
+	private ApplicationContext context;
 	/**
 	 * Initiates game with given number of players.
 	 * @param numberOfPlayers number of players
 	 */
 	public Game(int numberOfPlayers) {
+		context = new ClassPathXmlApplicationContext("Beans.xml");
+		this.dataTransfer =  (DataTransfer)context.getBean("DataTransfer");
 		this.players=new Player[numberOfPlayers];
 		this.board=new Peg[17][17];
 		this.baseField=new Player[17][17];
 		this.gameDAO=new GameDAO();
 		this.rules=new ArrayList<Rule>();
+		dataTransfer.addNewMove(0, 1, 1, 2, 2, Color.black);
 	}
 	/**
 	 * Adds given rule to the interface

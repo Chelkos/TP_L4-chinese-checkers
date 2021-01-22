@@ -1,17 +1,9 @@
 
-<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd " xmlns:aop="http://www.springframework.org/schema/aop">
-	<aop:config>
-      <aop:aspect id="DataTransfer" ref="DataTransfer">
-         <aop:pointcut id="Move" expression="execution(* connection.Game.processMoveCommand(..))"></aop:pointcut>
-         <aop:before></aop:before>
-         <aop:after pointcut-ref="Move" method="WyślijDoBDTenRuch" />
-         <aop:after-returning pointcut-ref="Move" returning="" method=""></aop:after-returning>        
-         <aop:after-throwing pointcut-ref="Move" throwing="ex" method="NiechNicNieRobi" />
-      </aop:aspect>
-   </aop:config><bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd " xmlns:aop="http://www.springframework.org/schema/aop"><bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
       <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-      <property name="url" value="jdbc:mysql://localhost:3306/test?sslMode=DISABLED" />     
+      <property name="url" value="jdbc:mysql://localhost:3306/trylma" />     
       <property name="username" value="Sensor" />
       <property name="password" value="Sensor" />
    </bean>
-	<bean></bean></beans>
+	<bean id="DataTransfer" class="connection.DataTransfer">
+		<property name="dataSource" ref="dataSource"></property></bean></beans>
