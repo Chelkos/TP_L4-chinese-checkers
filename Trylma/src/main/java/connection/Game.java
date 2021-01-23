@@ -42,8 +42,9 @@ public class Game {
 		this.baseField=new Player[17][17];
 		this.gameDAO=new GameDAO();
 		this.rules=new ArrayList<Rule>();
-		gameID=dataTransfer.getGameID();
-		dataTransfer.addNewMove(gameID, 1, 1, 2, 2, Color.black);
+	//	gameID=dataTransfer.getGameID();
+
+
 		
 	}
 	/**
@@ -144,6 +145,7 @@ public class Game {
 				}
 			}
 		}
+	//	dataTransfer.setupStartingPegPosition( gameID, board);
 	}
 	/**
 	 * 
@@ -310,6 +312,7 @@ public class Game {
 						if(!p.equals(this))
 							p.output.println("DEFEAT: " + this.name + " won");
 				}
+				//dataTransfer.addNewMove(gameID, begI, begJ, endI, endJ, board[endI][endJ].getOwnerColor());
 			} catch(IllegalMoveException e) {
 				output.println("INVALID_MOVE " + e.getMessage());
 			}
