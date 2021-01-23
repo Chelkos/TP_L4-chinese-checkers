@@ -36,8 +36,12 @@ public class TrilmaClient {
 	private Scanner input;
 	private PrintWriter output;
 	private Button endTurnButton;
+	private Button saveButton;
+	private Button loadButton;
 	public TrilmaClient() throws Exception{
 		frame = new JFrame();
+		saveButton = new Button("Save Game");
+		loadButton = new Button ("Load Game");
 		endTurnButton = new Button("End Turn");
 		messageLabel = new JLabel("");
 		socket=new Socket("127.0.0.1", 58901);
@@ -45,11 +49,23 @@ public class TrilmaClient {
 		output=new PrintWriter(socket.getOutputStream(), true);
 		messageLabel.setBackground(Color.LIGHT_GRAY);
 		frame.add(endTurnButton,BorderLayout.EAST);
+		frame.add(saveButton,BorderLayout.WEST);
+		frame.add(loadButton,BorderLayout.WEST);
 		frame.getContentPane().add(messageLabel, BorderLayout.SOUTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 1000);
         frame.setVisible(true);
         frame.setResizable(false);
+        saveButton.addMouseListener(new MouseAdapter(){
+        	public void mousePressed(MouseEvent e) {
+        		output.println("SAVE");
+        	}
+        });
+        loadButton.addMouseListener(new MouseAdapter(){
+        	public void mousePressed(MouseEvent e) {
+        		output.println("LOAD");
+        	}
+        });
         endTurnButton.addMouseListener(new MouseAdapter() {
         	public void mousePressed(MouseEvent e) {
         		output.println("END_TURN");
