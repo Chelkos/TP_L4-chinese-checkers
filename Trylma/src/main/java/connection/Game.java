@@ -10,7 +10,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import exceptions.IllegalMoveException;
 import exceptions.IllegalSelectionException;
@@ -38,7 +38,8 @@ public class Game implements GameInterface{
 	 * @param numberOfPlayers number of players
 	 */
 	public Game(int numberOfPlayers) {
-		this.dataTransfer =  (DataTransfer)context.getBean("DataTransfer");
+		this.context=new ClassPathXmlApplicationContext("file:src/main/java/beans.xml");
+		this.dataTransfer=(DataTransfer)context.getBean("DataTransfer");
 		this.players=new Player[numberOfPlayers];
 		this.board=new Peg[17][17];
 		this.baseField=new Player[17][17];
@@ -173,15 +174,18 @@ public class Game implements GameInterface{
 		this.board=dataTransfer.loadBoard(gameID);
 	}
 	
+	public void saveGame() {
+		
+	}
+	
+	@Override
+	public synchronized void select(int begI, int begJ, Player player) throws IllegalSelectionException { }
 
-		@Override
-		public synchronized void select(int begI, int begJ, Player player) throws IllegalSelectionException { }
-
-		@Override
-		public synchronized void move(int begI, int begJ, int endI, int endJ, Player player) throws IllegalMoveException {
-			player.movedPeg=board[begI][begJ]; //indicates which peg was moved this turn
-			board[endI][endJ]=board[begI][begJ]; board[begI][begJ]=null;
-		}
+	@Override
+	public synchronized void move(int begI, int begJ, int endI, int endJ, Player player) throws IllegalMoveException {
+		player.movedPeg=board[begI][begJ]; //indicates which peg was moved this turn
+		board[endI][endJ]=board[begI][begJ]; board[begI][begJ]=null;
+	}
 		
 	/**
 	 * 
@@ -277,6 +281,8 @@ public class Game implements GameInterface{
 	            } else if (command.startsWith("LOAD_GAME")) {
 	            	int gameID=Integer.parseInt(command.substring(10));
 	            	processLoadGameCommand(gameID);
+	            } else if (command.startsWith("SAVE_GAME")) {
+	            	saveGame();
 	            }
 	        }
 		}
