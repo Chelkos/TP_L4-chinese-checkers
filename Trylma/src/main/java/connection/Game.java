@@ -25,6 +25,7 @@ public class Game {
 	private Player[] players; //players in game
 	private Player currentPlayer;
 	private int currentPlayerIndex;
+	private int gameID;
 	private GameDAO gameDAO;
 	private List<Rule> rules;
 	private DataTransfer dataTransfer;
@@ -41,7 +42,9 @@ public class Game {
 		this.baseField=new Player[17][17];
 		this.gameDAO=new GameDAO();
 		this.rules=new ArrayList<Rule>();
-		dataTransfer.addNewMove(0, 1, 1, 2, 2, Color.black);
+		gameID=dataTransfer.getGameID();
+		dataTransfer.addNewMove(gameID, 1, 1, 2, 2, Color.black);
+		
 	}
 	/**
 	 * Adds given rule to the interface
