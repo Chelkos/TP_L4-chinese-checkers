@@ -14,13 +14,13 @@ public class DataTransfer {
 	   }
 	public void setupStartingPegPosition(int game_ID,int X,int Y,Color color)
 	{
-		String SQL = "INSERT INTO currentposition(game_ID,X,Y,color) VALUES (?, ?, ?, ?)";
+		String SQL = "INSERT INTO currentposition(game_ID,X,Y,color) VALUES (?, ?, ?, ?) ;";
 		jdbcTemplateObject.update(SQL,game_ID,X,Y,color.toString());
 	}
 	public void addNewMove(int game_ID,int endX, int endY, int begX, int begY,Color color) {
-		String SQL = "INSERT INTO movementlog(game_ID,endX,endY,begX,begY,color) VALUES (?, ?, ?, ?, ?, ?)";
+		String SQL = "INSERT INTO movementlog(game_ID,endX,endY,begX,begY,color) VALUES (?, ?, ?, ?, ?, ?) ;";
 		jdbcTemplateObject.update(SQL, game_ID,endX,endY,begX,begY,color.toString());
-		SQL = "UPDATE TABLE currentposition SET X = ?, Y = ? WHERE X = ? AND Y = ?";
+		SQL = "UPDATE currentposition SET X = ?, Y = ? WHERE X = ? AND Y = ? ;";
 		jdbcTemplateObject.update(SQL,endX,endY,begX,begY);
 	}
 	
