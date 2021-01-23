@@ -85,6 +85,11 @@ public class TrilmaClient {
 			}
 		});
 	}
+	
+	private void clearBoard() {
+		board.fields=new Field[20][20];
+	}
+	
 	/**
 	 * Sends and receives messages from the server 
 	 * @throws Exception on connection fault
@@ -136,9 +141,24 @@ public class TrilmaClient {
                 		messageLabel.setText("Loser");
                 } else if (response.startsWith("PLAYER_LEFT")) {
                 	messageLabel.setText("Player: "+ response.substring(response.indexOf(":")+1) +" left");
-                }
-                else if (response.startsWith("MESSAGE")) {
+                } else if (response.startsWith("MESSAGE")) {
                 	messageLabel.setText(response.substring(8));
+                } else if (response.startsWith("CLEAR")) {
+                	clearBoard();
+                } else if (response.startsWith("LOAD")) {
+                	int i, j, r, g, b;
+                	String parameter[]=new String[3]; String color[]=new String[3];
+                	parameter=response.substring(5).split("|");
+                	i=Integer.parseInt(parameter[1]); j=Integer.parseInt(parameter[2]);
+                	trimmed1=parameter[0].substring(parameter[0].indexOf("=")+1);
+                	r=Integer.parseInt(trimmed1.substring(0, trimmed1.indexOf(",")));
+                	trimmed1=trimmed1.substring(trimmed1.indexOf("=")+1);
+                	g=Integer.parseInt(trimmed1.substring(0, trimmed1.indexOf(",")));
+                	trimmed1=trimmed1.substring(trimmed1.indexOf("=")+1);
+                	b=Integer.parseInt(trimmed1.substring(0, trimmed1.indexOf("]")));
+                	board.fields[j][i].accept(new Peg(new Color(r, g, b)));
+                } else if (response.startsWith("REPAINT")) {
+                	board.repaint();
                 }
             }
             output.println("QUIT");

@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import exceptions.IllegalMoveException;
 import exceptions.IllegalSelectionException;
 import gameobjects.Peg;
@@ -19,7 +21,8 @@ import rules.Rule;
  * A game class for Trilma, executes commands, checks if the action is permitted by the rules, sends back commands to TrilmaClient
  * @see TrilmaClient
  */
-public class Game {
+
+public class Game implements GameInterface{
 	private Peg[][] board; //server version of board, only info about players needed, so Pegs instead of Fields
 	private Player[][] baseField; //if field is a base of certain player, then returns this player, else null
 	private Player[] players; //players in game
@@ -29,23 +32,19 @@ public class Game {
 	private GameDAO gameDAO;
 	private List<Rule> rules;
 	private DataTransfer dataTransfer;
-	 ApplicationContext context;
+	ApplicationContext context;
 	/**
 	 * Initiates game with given number of players.
 	 * @param numberOfPlayers number of players
 	 */
 	public Game(int numberOfPlayers) {
-		this.context = new ClassPathXmlApplicationContext("file:src/main/java/beans.xml");
 		this.dataTransfer =  (DataTransfer)context.getBean("DataTransfer");
 		this.players=new Player[numberOfPlayers];
 		this.board=new Peg[17][17];
 		this.baseField=new Player[17][17];
 		this.gameDAO=new GameDAO();
 		this.rules=new ArrayList<Rule>();
-	//	gameID=dataTransfer.getGameID();
-
-
-		
+		gameID=dataTransfer.getGameID();
 	}
 	/**
 	 * Adds given rule to the interface
@@ -63,7 +62,7 @@ public class Game {
 	 */
 	public GameInterface getDecoratedInterface() {
 		gameDAO.update(board, baseField, currentPlayer);
-		GameInterface trilmaInterface=new DefaultTrilmaInterface();
+		GameInterface trilmaInterface=this;
 		for(Rule rule : rules) {
 			rule.setGameDAO(gameDAO);
 			rule.setDecoratedInterface(trilmaInterface);
@@ -170,7 +169,10 @@ public class Game {
 		currentPlayer=players[currentPlayerIndex];
 	}
 	
-	class DefaultTrilmaInterface implements GameInterface {
+	public void loadGame(int gameID) {
+		this.board=dataTransfer.loadBoard(gameID);
+	}
+	
 
 		@Override
 		public synchronized void select(int begI, int begJ, Player player) throws IllegalSelectionException { }
@@ -181,7 +183,6 @@ public class Game {
 			board[endI][endJ]=board[begI][begJ]; board[begI][begJ]=null;
 		}
 		
-	}
 	/**
 	 * 
 	 * A server-side interface for client. 
@@ -273,6 +274,9 @@ public class Game {
 	                	processEndTurnCommand();
 	            } else if (command.startsWith("END_TURN")) {
 	            	processEndTurnCommand();
+	            } else if (command.startsWith("LOAD_GAME")) {
+	            	int gameID=Integer.parseInt(command.substring(10));
+	            	processLoadGameCommand(gameID);
 	            }
 	        }
 		}
@@ -332,6 +336,25 @@ public class Game {
 						p.output.println("MESSAGE " + currentPlayer.name + "'s move");
 			} catch(Exception e) {
 				output.println("MESSAGE " + e.getMessage());
+			}
+		}
+		
+		private void processLoadGameCommand(int gameID) {
+			loadGame(gameID);
+			String msg;
+			for(Player p : players) {
+				if(p!=null) { 
+					p.output.println("CLEAR");
+					for(int i=0; i<17; i++) {
+						for(int j=0; j<17; j++) {
+							if(board[i][j]!=null) {
+								msg="LOAD " + board[i][j].getOwnerColor().toString() + "|" + i + "|" + j;
+								p.output.println(msg);
+							}
+						}
+					}
+					p.output.println("REPAINT");
+				}
 			}
 		}
 	}
