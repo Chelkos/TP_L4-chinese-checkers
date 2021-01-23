@@ -1,28 +1,32 @@
 -------------------------------------------------------------------------------
 Test set: Trylma.GameRulesTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 6, Skipped: 0, Time elapsed: 0.035 s <<< FAILURE! - in Trylma.GameRulesTest
-notYourTurnTest(Trylma.GameRulesTest)  Time elapsed: 0.009 s  <<< ERROR!
-java.lang.NullPointerException
-	at Trylma.GameRulesTest.notYourTurnTest(GameRulesTest.java:123)
+Tests run: 7, Failures: 0, Errors: 7, Skipped: 0, Time elapsed: 14.364 s <<< FAILURE! - in Trylma.GameRulesTest
+validMoveTestDoubleJump(Trylma.GameRulesTest)  Time elapsed: 2.093 s  <<< ERROR!
+java.lang.NullPointerException: Cannot read field "board" because "this.client1" is null
+	at Trylma.GameRulesTest.validMoveTestDoubleJump(GameRulesTest.java:187)
 
-endTurnTest(Trylma.GameRulesTest)  Time elapsed: 0 s  <<< ERROR!
-java.lang.NullPointerException
-	at Trylma.GameRulesTest.endTurnTest(GameRulesTest.java:144)
+invalidSelectionTest(Trylma.GameRulesTest)  Time elapsed: 2.053 s  <<< ERROR!
+java.lang.NullPointerException: Cannot read field "board" because "this.client1" is null
+	at Trylma.GameRulesTest.invalidSelectionTest(GameRulesTest.java:24)
 
-validMoveTest(Trylma.GameRulesTest)  Time elapsed: 0.001 s  <<< ERROR!
-java.lang.NullPointerException
-	at Trylma.GameRulesTest.validMoveTest(GameRulesTest.java:77)
+validSelectionTest(Trylma.GameRulesTest)  Time elapsed: 2.024 s  <<< ERROR!
+java.lang.NullPointerException: Cannot read field "board" because "this.client1" is null
+	at Trylma.GameRulesTest.validSelectionTest(GameRulesTest.java:58)
 
-validSelectionTest(Trylma.GameRulesTest)  Time elapsed: 0.001 s  <<< ERROR!
-java.lang.NullPointerException
-	at Trylma.GameRulesTest.validSelectionTest(GameRulesTest.java:50)
+invalidMoveTest(Trylma.GameRulesTest)  Time elapsed: 2.049 s  <<< ERROR!
+java.lang.NullPointerException: Cannot read field "board" because "this.client1" is null
+	at Trylma.GameRulesTest.invalidMoveTest(GameRulesTest.java:85)
 
-validMoveTestDoubleJump(Trylma.GameRulesTest)  Time elapsed: 0.001 s  <<< ERROR!
-java.lang.NullPointerException
-	at Trylma.GameRulesTest.validMoveTestDoubleJump(GameRulesTest.java:100)
+validMoveTest(Trylma.GameRulesTest)  Time elapsed: 2.034 s  <<< ERROR!
+java.lang.NullPointerException: Cannot read field "board" because "this.client1" is null
+	at Trylma.GameRulesTest.validMoveTest(GameRulesTest.java:154)
 
-invalidSelectionTest(Trylma.GameRulesTest)  Time elapsed: 0 s  <<< ERROR!
-java.lang.NullPointerException
-	at Trylma.GameRulesTest.invalidSelectionTest(GameRulesTest.java:26)
+notYourTurnTest(Trylma.GameRulesTest)  Time elapsed: 2.056 s  <<< ERROR!
+java.lang.NullPointerException: Cannot read field "board" because "this.client1" is null
+	at Trylma.GameRulesTest.notYourTurnTest(GameRulesTest.java:220)
+
+endTurnTest(Trylma.GameRulesTest)  Time elapsed: 2.053 s  <<< ERROR!
+java.lang.NullPointerException: Cannot read field "board" because "this.client1" is null
+	at Trylma.GameRulesTest.endTurnTest(GameRulesTest.java:253)
 

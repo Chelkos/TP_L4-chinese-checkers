@@ -34,7 +34,7 @@ public class Game {
 	 * @param numberOfPlayers number of players
 	 */
 	public Game(int numberOfPlayers) {
-		this.context = new ClassPathXmlApplicationContext("beans.xml");
+		this.context = new ClassPathXmlApplicationContext("file:src/main/java/beans.xml");
 		this.dataTransfer =  (DataTransfer)context.getBean("DataTransfer");
 		this.players=new Player[numberOfPlayers];
 		this.board=new Peg[17][17];
