@@ -191,6 +191,7 @@ public class Game {
 		public Socket socket;
 		public Scanner input;
 		public PrintWriter output;
+		public int gameID;
 		
 		/**
 		 * Creates Player - server-side interface for client.
@@ -202,6 +203,7 @@ public class Game {
 			this.socket=socket;
 			this.name=name;
 			this.color=color;
+			this.gameID=1;
 			addPlayer(this);
 		}
 		
