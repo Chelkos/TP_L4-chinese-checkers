@@ -171,6 +171,7 @@ public class Game implements GameInterface{
 	}
 	
 	public void loadGame(int gameID) {
+		this.board= new Peg[17][17];
 		this.board=dataTransfer.loadBoard(gameID);
 	}
 	
@@ -346,13 +347,13 @@ public class Game implements GameInterface{
 		}
 		
 		private void processLoadGameCommand(int gameID) {
-			loadGame(gameID);
+			loadGame(0);
 			String msg;
 			for(Player p : players) {
-				if(p!=null) { 
+				if(p!=null && p.output!=null) { 
 					p.output.println("CLEAR");
 					for(int i=0; i<17; i++) {
-						for(int j=0; j<17; j++) {
+						for(int j=0; j<17; j++) {//board[i][j].getOwnerColor().toString()
 							if(board[i][j]!=null) {
 								msg="LOAD " + board[i][j].getOwnerColor().toString() + "|" + i + "|" + j;
 								p.output.println(msg);

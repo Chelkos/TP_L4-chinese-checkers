@@ -67,6 +67,7 @@ public class DataTransfer {
   			board[i][j]=null;
 	  for(Data d : movementLog)
 	  {
+		 
 		  board[d.X][d.Y]=new Peg(d.color);
 		  
 	  }
@@ -138,19 +139,20 @@ public class DataTransfer {
 	public Data mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Data data = new Data();
 		data.game_ID=rs.getInt("game_ID");
-		  if(rs.getString("color")=="BLUE")
+		  if(rs.getString("color").equals("BLUE"))
 			  data.color=Color.BLUE;
-	        if(rs.getString("color")=="RED")
+		  else if(rs.getString("color").equals("RED"))
 	        	data.color=Color.RED;
-	        if(rs.getString("color")=="GREEN")
+		  else  if(rs.getString("color").equals("GREEN"))
 	        	data.color=Color.GREEN;
-	        if(rs.getString("color")=="YELLOW")
+		  else if(rs.getString("color").equals("YELLOW"))
 	        	data.color=Color.YELLOW;
-	        if(rs.getString("color")=="CYAN")
+		  else  if(rs.getString("color").equals("CYAN"))
 	        	data.color=Color.CYAN;
-	        if(rs.getString("color")=="MAGENTA")
+		  else  if(rs.getString("color").equals("MAGENTA"))
 	        	data.color=Color.MAGENTA;
-		
+		  else
+			  data.color=Color.BLACK;
 		data.X=rs.getInt("X");
 		data.Y=rs.getInt("Y");
 		return data;

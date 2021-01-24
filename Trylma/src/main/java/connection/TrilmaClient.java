@@ -28,6 +28,7 @@ import gameobjects.*;
  */
 public class TrilmaClient {
 	private JFrame frame;
+	private JFrame options;
 	private JLabel messageLabel;
 	private Board board;
 	private Field selectedField=null; 
@@ -40,6 +41,7 @@ public class TrilmaClient {
 	private Button loadButton;
 	public TrilmaClient() throws Exception{
 		frame = new JFrame();
+		options = new JFrame();
 		saveButton = new Button("Save Game");
 		loadButton = new Button ("Load Game");
 		endTurnButton = new Button("End Turn");
@@ -48,22 +50,29 @@ public class TrilmaClient {
 		input=new Scanner(socket.getInputStream());
 		output=new PrintWriter(socket.getOutputStream(), true);
 		messageLabel.setBackground(Color.LIGHT_GRAY);
-		frame.add(endTurnButton,BorderLayout.EAST);
-		frame.add(saveButton,BorderLayout.WEST);
-		frame.add(loadButton,BorderLayout.WEST);
+		frame.setLayout(new BorderLayout());
+	
+		options.add(saveButton,BorderLayout.SOUTH);
+		options.setSize(250,250);
+        frame.setSize(1000, 1000);
+        options.add(endTurnButton,BorderLayout.NORTH);
+        options.add(loadButton,BorderLayout.EAST);
 		frame.getContentPane().add(messageLabel, BorderLayout.SOUTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 1000);
+        
+        options.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setResizable(false);
+        options.setVisible(true);
+        options.setResizable(false);
         saveButton.addMouseListener(new MouseAdapter(){
         	public void mousePressed(MouseEvent e) {
-        		output.println("SAVE");
+        		output.println("SAVE_GAME");
         	}
         });
         loadButton.addMouseListener(new MouseAdapter(){
         	public void mousePressed(MouseEvent e) {
-        		output.println("LOAD");
+        		output.println("LOAD_GAME 0");
         	}
         });
         endTurnButton.addMouseListener(new MouseAdapter() {
@@ -72,7 +81,8 @@ public class TrilmaClient {
         	}
         });
 		board=new Board();
-        frame.add(board);
+        frame.add(board,BorderLayout.CENTER);
+
 		board.setBackground(Color.WHITE);
 		board.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -103,7 +113,10 @@ public class TrilmaClient {
 	}
 	
 	private void clearBoard() {
-		board.fields=new Field[20][20];
+    	for(int i=0; i<20;i++)
+    		for(int j=0; j<20;j++)
+    			if(board.fields[i][j]!=null)
+    				board.fields[i][j].accept(null);
 	}
 	
 	/**
@@ -163,15 +176,23 @@ public class TrilmaClient {
                 	clearBoard();
                 } else if (response.startsWith("LOAD")) {
                 	int i, j, r, g, b;
-                	String parameter[]=new String[3]; String color[]=new String[3];
-                	parameter=response.substring(5).split("|");
-                	i=Integer.parseInt(parameter[1]); j=Integer.parseInt(parameter[2]);
-                	trimmed1=parameter[0].substring(parameter[0].indexOf("=")+1);
-                	r=Integer.parseInt(trimmed1.substring(0, trimmed1.indexOf(",")));
-                	trimmed1=trimmed1.substring(trimmed1.indexOf("=")+1);
-                	g=Integer.parseInt(trimmed1.substring(0, trimmed1.indexOf(",")));
-                	trimmed1=trimmed1.substring(trimmed1.indexOf("=")+1);
-                	b=Integer.parseInt(trimmed1.substring(0, trimmed1.indexOf("]")));
+                	String parameter; String color[]=new String[3];
+                	parameter=response.substring(21);
+                	System.out.println(parameter);
+                	r=Integer.parseInt(parameter.substring(parameter.indexOf("=")+1,parameter.indexOf(",")));
+                	parameter=parameter.substring(parameter.indexOf(",")+1);
+                	System.out.println(parameter);
+                	g=Integer.parseInt(parameter.substring(parameter.indexOf("=")+1,parameter.indexOf(",")));
+                	parameter=parameter.substring(parameter.indexOf(",")+1);
+                	System.out.println(parameter);
+                	b=Integer.parseInt(parameter.substring(parameter.indexOf("=")+1,parameter.indexOf("]")));
+                	parameter=parameter.substring(parameter.indexOf("|")+1);
+                	i=Integer.parseInt(parameter.substring(0,parameter.indexOf("|")));
+                	System.out.println(parameter);
+                	parameter=parameter.substring(parameter.indexOf("|")+1);
+                	j=Integer.parseInt(parameter.substring(0));
+                	System.out.println(j + " "+ i + " "+r+" "+g+" "+b);
+                
                 	board.fields[j][i].accept(new Peg(new Color(r, g, b)));
                 } else if (response.startsWith("REPAINT")) {
                 	board.repaint();
