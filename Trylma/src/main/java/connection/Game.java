@@ -249,6 +249,7 @@ public class Game implements GameInterface{
 			input=new Scanner(socket.getInputStream());
 			output=new PrintWriter(socket.getOutputStream(), true);
 			output.println("WELCOME " + name);
+			output.println("GAME " + gameIDG);
 			output.println("PLAYERS: " + Integer.toString(players.length));
 			if(this==players[players.length-1]) {
 				currentPlayer=players[currentPlayerIndex];

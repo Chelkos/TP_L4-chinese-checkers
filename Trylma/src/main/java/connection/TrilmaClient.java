@@ -2,6 +2,7 @@ package connection;
 
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
@@ -13,6 +14,8 @@ import java.util.Scanner;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -40,27 +43,38 @@ public class TrilmaClient {
 	private Socket socket;
 	private Scanner input;
 	private PrintWriter output;
-	private Button endTurnButton;
-	private Button saveButton;
-	private Button loadButton;
+	private JButton endTurnButton;
+	private JButton saveButton;
+	private JButton loadButton;
 	public TrilmaClient() throws Exception{
 		frame = new JFrame();
 		options = new JFrame();
-		saveButton = new Button("Save Game");
-		loadButton = new Button ("Load Game");
-		endTurnButton = new Button("End Turn");
+		saveButton = new JButton("Save Game");
+		loadButton = new JButton ("Load Game");
+		endTurnButton = new JButton("End Turn");
 		messageLabel = new JLabel("");
 		socket=new Socket("127.0.0.1", 58901);
 		input=new Scanner(socket.getInputStream());
 		output=new PrintWriter(socket.getOutputStream(), true);
 		messageLabel.setBackground(Color.LIGHT_GRAY);
 		frame.setLayout(new BorderLayout());
-	
-		options.add(saveButton,BorderLayout.SOUTH);
-		options.setSize(250,250);
+		
+		options.getContentPane().setLayout(new BoxLayout(options.getContentPane(), BoxLayout.Y_AXIS));
+		options.setSize(200,200);
+		endTurnButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		loadButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		options.getContentPane().add(endTurnButton);
+        options.getContentPane().add(loadButton);
+		options.getContentPane().add(saveButton);
+		endTurnButton.setSize(170, 60);
+		saveButton.setSize(170, 60);
+		loadButton.setSize(170, 60);
+		//options.add(saveButton,BorderLayout.SOUTH);
+		
         frame.setSize(1000, 1000);
-        options.add(endTurnButton,BorderLayout.NORTH);
-        options.add(loadButton,BorderLayout.EAST);
+        //options.add(endTurnButton,BorderLayout.NORTH);
+        //options.add(loadButton,BorderLayout.EAST);
 		frame.getContentPane().add(messageLabel, BorderLayout.SOUTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -81,8 +95,8 @@ public class TrilmaClient {
         		saveWindow.setLayout(new FlowLayout(FlowLayout.LEFT));
         		JTextField textField=new JTextField(14);
         		textField.setSize(200, 50);
-        		saveButton=new Button("Accept");
-        		saveButton.addMouseListener(new MouseAdapter() {
+        		JButton acceptButton=new JButton("Accept");
+        		acceptButton.addMouseListener(new MouseAdapter() {
         			public void mousePressed(MouseEvent e) {
         				int n=Integer.parseInt(textField.getText());
         				output.println("LOAD_GAME " + n);
@@ -91,7 +105,7 @@ public class TrilmaClient {
         		});
         		saveWindow.add(new JLabel("Enter ID of game to load: "));
         		saveWindow.add(textField);
-        		saveWindow.add(saveButton);
+        		saveWindow.add(acceptButton);
         		saveWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         		saveWindow.setVisible(true);
         		saveWindow.setResizable(false);
@@ -102,7 +116,8 @@ public class TrilmaClient {
         		output.println("END_TURN");
         	}
         });
-		board=new Board();
+		
+        board=new Board();
         frame.add(board,BorderLayout.CENTER);
 
 		board.setBackground(Color.WHITE);
@@ -148,8 +163,12 @@ public class TrilmaClient {
     public void play() throws Exception {
         try {
         	int noPlayers;
-            String response =  input.nextLine();
-            frame.setTitle(response.substring(7));
+            String response = input.nextLine();
+            String name=response.substring(7);
+            response = input.nextLine();
+            String gameID=response.substring(5);
+            frame.setTitle("Game ID: " + gameID + ", player: " + name);
+            options.setTitle(name);
             response = input.nextLine();
             noPlayers = Integer.parseInt(response.substring(9));
             board.fillBoard(noPlayers);
