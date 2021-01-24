@@ -347,7 +347,7 @@ public class Game implements GameInterface{
 		}
 		
 		private void processLoadGameCommand(int gameID) {
-			loadGame(0);
+			loadGame(gameID);
 			String msg;
 			for(Player p : players) {
 				if(p!=null && p.output!=null) { 
