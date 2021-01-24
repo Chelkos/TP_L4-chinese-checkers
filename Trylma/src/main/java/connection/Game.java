@@ -145,7 +145,7 @@ public class Game implements GameInterface{
 				}
 			}
 		}
-	//	dataTransfer.setupStartingPegPosition( gameID, board);
+		dataTransfer.setupStartingPegPosition( gameIDG, board);
 	}
 	/**
 	 * 
@@ -348,7 +348,7 @@ public class Game implements GameInterface{
 		}
 		
 		private void processLoadGameCommand(int gameID) {
-			loadGame(gameID);
+			loadGame(gameIDG-1);
 			String msg;
 			for(Player p : players) {
 				if(p!=null && p.output!=null) { 

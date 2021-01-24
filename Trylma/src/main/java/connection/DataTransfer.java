@@ -25,7 +25,7 @@ public class DataTransfer {
     }
     public int getGameID()
     {	int game_ID;
-    	String SQL = "SELECT MAX(game_ID) FROM movementlog;";
+    	String SQL = "SELECT MAX(game_ID) FROM currentposition;";
     	try {
     	game_ID = jdbcTemplateObject.queryForObject(SQL,Integer.class);
     	game_ID++;
