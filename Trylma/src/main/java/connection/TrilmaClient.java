@@ -178,20 +178,15 @@ public class TrilmaClient {
                 	int i, j, r, g, b;
                 	String parameter; String color[]=new String[3];
                 	parameter=response.substring(21);
-                	System.out.println(parameter);
                 	r=Integer.parseInt(parameter.substring(parameter.indexOf("=")+1,parameter.indexOf(",")));
                 	parameter=parameter.substring(parameter.indexOf(",")+1);
-                	System.out.println(parameter);
                 	g=Integer.parseInt(parameter.substring(parameter.indexOf("=")+1,parameter.indexOf(",")));
                 	parameter=parameter.substring(parameter.indexOf(",")+1);
-                	System.out.println(parameter);
                 	b=Integer.parseInt(parameter.substring(parameter.indexOf("=")+1,parameter.indexOf("]")));
                 	parameter=parameter.substring(parameter.indexOf("|")+1);
                 	i=Integer.parseInt(parameter.substring(0,parameter.indexOf("|")));
-                	System.out.println(parameter);
                 	parameter=parameter.substring(parameter.indexOf("|")+1);
                 	j=Integer.parseInt(parameter.substring(0));
-                	System.out.println(j + " "+ i + " "+r+" "+g+" "+b);
                 
                 	board.fields[j][i].accept(new Peg(new Color(r, g, b)));
                 } else if (response.startsWith("REPAINT")) {

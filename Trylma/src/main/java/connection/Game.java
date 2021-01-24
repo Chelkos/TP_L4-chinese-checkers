@@ -28,7 +28,7 @@ public class Game implements GameInterface{
 	private Player[] players; //players in game
 	private Player currentPlayer;
 	private int currentPlayerIndex;
-	private int gameID;
+	private int gameIDG;
 	private GameDAO gameDAO;
 	private List<Rule> rules;
 	private DataTransfer dataTransfer;
@@ -45,7 +45,7 @@ public class Game implements GameInterface{
 		this.baseField=new Player[17][17];
 		this.gameDAO=new GameDAO();
 		this.rules=new ArrayList<Rule>();
-		gameID=dataTransfer.getGameID();
+		gameIDG=dataTransfer.getGameID();
 	}
 	/**
 	 * Adds given rule to the interface
@@ -176,7 +176,7 @@ public class Game implements GameInterface{
 	}
 	
 	public void saveGame() {
-		
+		dataTransfer.addNewMove();
 	}
 	
 	@Override
@@ -214,7 +214,7 @@ public class Game implements GameInterface{
 			this.socket=socket;
 			this.name=name;
 			this.color=color;
-			this.gameID=1;
+			this.gameID=gameIDG;
 			addPlayer(this);
 		}
 		
@@ -322,8 +322,9 @@ public class Game implements GameInterface{
 					for(Player p : players)
 						if(!p.equals(this))
 							p.output.println("DEFEAT: " + this.name + " won");
+				
 				}
-				//dataTransfer.addNewMove(gameID, begI, begJ, endI, endJ, board[endI][endJ].getOwnerColor());
+				dataTransfer.addMovementToList( begI, begJ, endI, endJ , this);
 			} catch(IllegalMoveException e) {
 				output.println("INVALID_MOVE " + e.getMessage());
 			}

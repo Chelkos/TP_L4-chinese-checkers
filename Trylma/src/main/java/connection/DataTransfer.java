@@ -21,6 +21,7 @@ public class DataTransfer {
     public void setDataSource(DataSource dataSource){
           this.dataSource = dataSource;
           this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+          movementList=new ArrayList<String>();
     }
     public int getGameID()
     {	int game_ID;
@@ -36,8 +37,7 @@ public class DataTransfer {
     	return game_ID;
     }
    public void addMovementToList(int begI, int begJ, int endI, int endJ, Player player) {
-    	if(movementList==null)
-    		movementList=new ArrayList<String>();
+
     	String colorname="";
     	 if(player.color==Color.BLUE)
 	        	colorname="BLUE";
@@ -53,7 +53,6 @@ public class DataTransfer {
 	        	colorname="MAGENTA";
     	String movement=player.gameID + "," + colorname + "," + endI + "," + endJ + "," + begI + "," + begJ;
     	movementList.add(movement);
-    	System.out.println(movement);
     }
   public Peg[][] loadBoard(int gameID)
   {	
@@ -107,18 +106,23 @@ public class DataTransfer {
     	int endY=0;
     	int game_ID=0;
     	String color="NONE";
-    	String parsing[];
     	String SQL = "INSERT INTO movementlog(game_ID,endX,endY,begX,begY,color) VALUES (?, ?, ?, ?, ?, ?) ;";
     	 for(String s : movementList)
     	 {
+    	// movement=player.gameID + "," + colorname + "," + endI + "," + endJ + "," + begI + "," + begJ;
     	
-    		parsing=s.split(",");
-    		game_ID=Integer.parseInt(parsing[0]);
-    		colorname=parsing[1];
-    		endX=Integer.parseInt(parsing[2]);
-    		endY=Integer.parseInt(parsing[3]);
-    		begX=Integer.parseInt(parsing[4]);
-    		begY=Integer.parseInt(parsing[5]);
+    		game_ID=Integer.parseInt(s.substring(0,s.indexOf(",")));
+    		s=s.substring(s.indexOf(",")+1);
+    		colorname=s.substring(0,s.indexOf(","));
+    		s=s.substring(s.indexOf(",")+1);
+    		endX=Integer.parseInt(s.substring(0,s.indexOf(",")));
+    		s=s.substring(s.indexOf(",")+1);
+    		endY=Integer.parseInt(s.substring(0,s.indexOf(",")));
+    		s=s.substring(s.indexOf(",")+1);
+    		begX=Integer.parseInt(s.substring(0,s.indexOf(",")));
+    		s=s.substring(s.indexOf(",")+1);
+    		begY=Integer.parseInt(s.substring(0));
+    		SQL = "INSERT INTO movementlog(game_ID,endX,endY,begX,begY,color) VALUES (?, ?, ?, ?, ?, ?) ;";
             jdbcTemplateObject.update(SQL, game_ID,endX,endY,begX,begY,colorname);
             SQL = "UPDATE currentposition SET X = ?, Y = ? WHERE X = ? AND Y = ? ;";
             jdbcTemplateObject.update(SQL,endX,endY,begX,begY);
