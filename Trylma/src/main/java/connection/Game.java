@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import javax.sql.DataSource;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -40,6 +42,8 @@ public class Game implements GameInterface{
 	public Game(int numberOfPlayers) {
 		this.context=new ClassPathXmlApplicationContext("file:src/main/java/beans.xml");
 		this.dataTransfer=(DataTransfer)context.getBean("DataTransfer");
+		DataSource ds=(DataSource)context.getBean("dataSource");
+		dataTransfer.setDataSource(ds);
 		this.players=new Player[numberOfPlayers];
 		this.board=new Peg[17][17];
 		this.baseField=new Player[17][17];
@@ -348,7 +352,7 @@ public class Game implements GameInterface{
 		}
 		
 		private void processLoadGameCommand(int gameID) {
-			loadGame(gameIDG-1);
+			loadGame(gameID);
 			String msg;
 			for(Player p : players) {
 				if(p!=null && p.output!=null) { 

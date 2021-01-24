@@ -2,6 +2,7 @@ package connection;
 
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.BorderLayout;
@@ -19,6 +20,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import gameobjects.*;
 /**
@@ -26,9 +28,11 @@ import gameobjects.*;
  *Trilma Client initializes a Frame for the Client, provides visuals and establishes connection with a server
  *
  */
+
 public class TrilmaClient {
 	private JFrame frame;
 	private JFrame options;
+	private JFrame saveWindow;
 	private JLabel messageLabel;
 	private Board board;
 	private Field selectedField=null; 
@@ -72,7 +76,25 @@ public class TrilmaClient {
         });
         loadButton.addMouseListener(new MouseAdapter(){
         	public void mousePressed(MouseEvent e) {
-        		output.println("LOAD_GAME 0");
+        		saveWindow=new JFrame("Load game");
+        		saveWindow.setSize(250, 100);
+        		saveWindow.setLayout(new FlowLayout(FlowLayout.LEFT));
+        		JTextField textField=new JTextField(14);
+        		textField.setSize(200, 50);
+        		saveButton=new Button("Accept");
+        		saveButton.addMouseListener(new MouseAdapter() {
+        			public void mousePressed(MouseEvent e) {
+        				int n=Integer.parseInt(textField.getText());
+        				output.println("LOAD_GAME " + n);
+        				saveWindow.dispose();
+        			}
+        		});
+        		saveWindow.add(new JLabel("Enter ID of game to load: "));
+        		saveWindow.add(textField);
+        		saveWindow.add(saveButton);
+        		saveWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        		saveWindow.setVisible(true);
+        		saveWindow.setResizable(false);
         	}
         });
         endTurnButton.addMouseListener(new MouseAdapter() {
